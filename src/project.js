@@ -83,7 +83,7 @@ function handleAddTodoButton () {
     const addTodoButton = document.querySelector(".add-todo");
     addTodoButton.addEventListener("click", () => {
         createTodosForm();
-        handleTodoForm();
+        //handleTodoForm();
     });
 }
 
@@ -115,22 +115,34 @@ function handleTodoForm() {
         console.log(todoDescription);
             
         const todoTitleDiv = document.createElement("div");
-        todoTitleDiv.innerHTML = 
-        `
-        <h1>${todoTitle}</h1>
-        <p>${todoDescription}</p>
-        `;
+        todoTitleDiv.className = "todo-title-container";
+        todoTitleDiv.innerHTML = `
+        <input type=checkbox value=${todoTitle} name=todoTitle id=todoTitle>
+        <label for=todoTitle> ${todoTitle} </label> 
+        <h3>${todoDescription}</h3>`;
         
         todoForm.style.display = "none";
             
         const container = document.querySelector(".project-contents");
             
         container.appendChild(todoTitleDiv);
+        handleTodoCheckbox();
     });
 
-    todoForm.style.display = "block";
-
 };
+
+
+function handleTodoCheckbox() {
+    const checkBoxes = document.querySelectorAll(".project-contents input[type=checkbox]");
+    const todoTitleContainer = document.querySelector(".todo-title-container");
+    const container = document.querySelector(".project-contents");
+    checkBoxes.forEach((checkBox) => {
+        checkBox.addEventListener("change", () => {
+            container.removeChild(todoTitleContainer);
+        })
+    })
+
+}
 
 export function createProjectForm () {
     const projectForm = document.createElement("form");
@@ -191,10 +203,11 @@ export class Todos extends Project{
 
 
 export function  createTodosForm () {
-    const todosForm = document.querySelector(".todo-form");
+    let todosForm = document.querySelector(".todo-form");
+    //todosForm.style.display = "block";
 
     if (!todosForm) {
-        const todosForm = document.createElement("form");
+        todosForm = document.createElement("form");
         todosForm.className = "todo-form";
         const titleTodoInput = document.createElement("input");
         titleTodoInput.type = "text";
@@ -326,7 +339,6 @@ export function  createTodosForm () {
         todoButtonsDiv.append(todoCancelButton, submitTodo);
 
 
-
         featuresContainer.append(titleTodoInput, descriptionTodoInput, datepickerDiv, prioritiesDiv, todoNotesDiv, todoButtonsDiv);
         
         todosForm.appendChild(featuresContainer);
@@ -334,11 +346,11 @@ export function  createTodosForm () {
         const container = document.querySelector(".todo-form-div");
 
         container.appendChild(todosForm);
-    }
+
+        handleTodoForm();
         
-    //handleSubmitTodo();
-    //handleCancelTodo();
-   
+    }
+    todosForm.style.display = "block";
 }
 
 

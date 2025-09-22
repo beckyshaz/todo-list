@@ -62,6 +62,7 @@ export function getProjectInfo() {
         <h1>${projectTitle}</h1>
         <p>${projectDescription}</p>
         `;
+        projectTitleDiv.style.backgroundColor = "red";
 
         const container = document.querySelector(".project-contents");
 
@@ -120,6 +121,7 @@ function handleTodoForm() {
         <input type=checkbox value=${todoTitle} name=todoTitle id=todoTitle>
         <label for=todoTitle> ${todoTitle} </label> 
         <h3>${todoDescription}</h3>`;
+        todoTitleDiv.style.backgroundColor = "yellow";
         
         todoForm.style.display = "none";
             
@@ -133,17 +135,31 @@ function handleTodoForm() {
 
 
 function handleTodoCheckbox() {
-    const checkBoxes = document.querySelectorAll(".project-contents input[type=checkbox]");
-    const todoTitleContainer = document.querySelector(".todo-title-container");
-    const container = document.querySelector(".project-contents");
+    /*const checkBoxes = document.querySelectorAll(".project-contents input[type=checkbox]");
+    
+   
+    //const container = document.querySelector(".project-contents");
     checkBoxes.forEach((checkBox) => {
         checkBox.addEventListener("change", () => {
-            container.removeChild(todoTitleContainer);
+           if (checkBox.checked) {
+            const todoTitleContainer = document.querySelector(".todo-title-container");
+            const completedTodoDiv = document.querySelector(".completed-todos");
+            completedTodoDiv.appendChild(todoTitleContainer);
+            
+           }
+            
         })
+    })*/
+
+    const container = document.querySelector(".project-contents");
+    container.addEventListener("change", (event) => {
+        if (event.target.checked) {
+            const todoTitleContainer = event.target.parentElement;
+            const completedTodoDiv = document.querySelector(".completed-todos");
+            completedTodoDiv.appendChild(todoTitleContainer);
+        }
     })
-
 }
-
 export function createProjectForm () {
     const projectForm = document.createElement("form");
     projectForm.className = "project-form";

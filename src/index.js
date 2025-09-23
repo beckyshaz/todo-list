@@ -9,13 +9,15 @@ import { createProjectForm } from "./project";
 
 import { createTodosForm } from "./project";
 
-import { getProjectInfo } from "./project";
+import { listProjects } from "./project";
 
 import { handleProjectCancelButton } from "./project";
 
-import { handleAddTodoButton } from "./project";
+import { handleAddProjectBtn } from "./project";
 
 import { handleSubmitTodo } from "./project";
+
+import { showMyProjects } from "./project";
 
 //const project = new Project("Love", "love is a beautiful thing when founded"); 
 //console.log(project);
@@ -23,11 +25,11 @@ import { handleSubmitTodo } from "./project";
 const todo = new Todos("washing", "washing clothes is diffult but we manage", 13, "low", "done");
 console.log(todo);
 
-createProjectForm();
+//createProjectForm();
 
 //createTodosForm();
 
-getProjectInfo();
+//listProjects();
 
 //handleProjectCancelButton()
 //handleAddTodoButton()
@@ -35,3 +37,7 @@ getProjectInfo();
 //handleSubmitTodo();
 
 //handleTodoForm();
+
+handleAddProjectBtn();
+
+showMyProjects();

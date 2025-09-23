@@ -8,7 +8,7 @@ export class Project {
         this.description = description;
     };
 
-    createAddTodoButton() {
+   static createAddTodoButton() {
         const addTodoButton = document.createElement("button");
         addTodoButton.className = "add-todo";
         addTodoButton.innerHTML = "add Todo";
@@ -30,54 +30,59 @@ export class Project {
         })
 }*/
 
-export function getProjectInfo() {
+export function handleCreateProject() {
     const projectForm = document.querySelector(".project-form");
-    projectForm.addEventListener("submit", (event) => { 
+    
+    if (!projectForm) {
+        return;
+    }
+
+    //createProjectForm();
+    const submitProjectBtn = document.querySelector(".submit-project");
+    const cancelProjectBtn = document.querySelector(".cancel-project");
+
+    submitProjectBtn.addEventListener("click", (event) => { 
         event.preventDefault();
         alert("Details submitted successfully");
-
-        //const project = new Project()
-
+    
+            //const project = new Project()
+    
         const titleInput = document.getElementById("title");
         const projectTitle = titleInput.value;
-
+        
         const descriptionInput = document.getElementById("project-description");
         const projectDescription = descriptionInput.value;
-
+        
         console.log(projectTitle);
         console.log(projectDescription);
-
+        
         projectForm.style.display = "none";
-
-        const project = new Project(projectTitle, projectDescription);
-
-        //project.createAddTodoButton();
-
-        //const addTodoButton = document.querySelector(bu)
-
-        console.log(project);
-
+        
         const projectTitleDiv = document.createElement("div");
         projectTitleDiv.innerHTML = `
         <h1>${projectTitle}</h1>
         <p>${projectDescription}</p>
         `;
         projectTitleDiv.style.backgroundColor = "red";
+        
+        const myProjects = document.querySelector(".my-projects");
+        myProjects.appendChild(projectTitleDiv);
+    });
 
-        const container = document.querySelector(".project-contents");
+    cancelProjectBtn.addEventListener("click", () => {
+        projectForm.style.display = "none";
+    });
+    
+        //projectForm.style.display = "block";
+    
+}
+    
 
-        container.appendChild(projectTitleDiv);
-
-        project.createAddTodoButton();
-        handleAddTodoButton();
-
-        //const addTodoButton = document.querySelector(bu)
-
-
-    })
-
-
-
+export function handleAddProjectBtn() {
+    const addProjectBtn = document.querySelector(".add-project");
+    addProjectBtn.addEventListener("click", () => {
+        createProjectForm();
+    });
 }
 
 function handleAddTodoButton () { 
@@ -135,21 +140,6 @@ function handleTodoForm() {
 
 
 function handleTodoCheckbox() {
-    /*const checkBoxes = document.querySelectorAll(".project-contents input[type=checkbox]");
-    
-   
-    //const container = document.querySelector(".project-contents");
-    checkBoxes.forEach((checkBox) => {
-        checkBox.addEventListener("change", () => {
-           if (checkBox.checked) {
-            const todoTitleContainer = document.querySelector(".todo-title-container");
-            const completedTodoDiv = document.querySelector(".completed-todos");
-            completedTodoDiv.appendChild(todoTitleContainer);
-            
-           }
-            
-        })
-    })*/
 
     const container = document.querySelector(".project-contents");
     container.addEventListener("change", (event) => {
@@ -161,48 +151,54 @@ function handleTodoCheckbox() {
     })
 }
 export function createProjectForm () {
-    const projectForm = document.createElement("form");
-    projectForm.className = "project-form";
-    const titleInput = document.createElement("input");
-    titleInput.type = "text";
-    titleInput.value = "Project Name";
-    titleInput.className = "project-name";
-    titleInput.id = "title"
-    titleInput.name = "project-name";
-    titleInput.style.color = "rgba(0, 0, 0, 0.4)";
+    let projectForm = document.querySelector(".project-form");
 
-    const descriptionInput = document.createElement("input");
-    descriptionInput.value = "Description";
-    descriptionInput.name = "project-description";
-    descriptionInput.id = "project-description";
-    descriptionInput.style.color = "rgba(0, 0, 0, 0.4)";
-    descriptionInput.style.border = "none";
+    if (!projectForm) {
+        projectForm = document.createElement("form");
+        projectForm.className = "project-form";
+        const titleInput = document.createElement("input");
+        titleInput.type = "text";
+        titleInput.value = "Project Name";
+        titleInput.className = "project-name";
+        titleInput.id = "title"
+        titleInput.name = "project-name";
+        titleInput.style.color = "rgba(0, 0, 0, 0.4)";
 
-    const buttonsDiv = document.createElement("div");
-    buttonsDiv.className = "buttons-div";
+        const descriptionInput = document.createElement("input");
+        descriptionInput.value = "Description";
+        descriptionInput.name = "project-description";
+        descriptionInput.id = "project-description";
+        descriptionInput.style.color = "rgba(0, 0, 0, 0.4)";
+        descriptionInput.style.border = "none";
 
-    const submit = document.createElement("button");
-    submit.innerHTML = "Submit";
-    submit.type = "submit";
-    submit.className = "submit-project";
+        const buttonsDiv = document.createElement("div");
+        buttonsDiv.className = "buttons-div";
 
-    const cancelButton = document.createElement("button");
-    cancelButton.innerHTML = "Cancel";
-    cancelButton.classList = "cancel-project";
+        const submit = document.createElement("button");
+        submit.innerHTML = "Submit";
+        submit.type = "submit";
+        submit.className = "submit-project";
 
-    buttonsDiv.append(cancelButton, submit);
+        const cancelButton = document.createElement("button");
+        cancelButton.innerHTML = "Cancel";
+        cancelButton.classList = "cancel-project";
+        cancelButton.type = "button";
 
-    projectForm.append(titleInput, descriptionInput, buttonsDiv);
+        buttonsDiv.append(cancelButton, submit);
 
-    
+        projectForm.append(titleInput, descriptionInput, buttonsDiv);
 
-
-    const container = document.querySelector(".project-form-div");
-
-    container.appendChild(projectForm);
-
+        
 
 
+        const container = document.querySelector(".project-form-div");
+
+        container.appendChild(projectForm);
+        handleCreateProject();
+
+            
+    }
+    projectForm.style.display = "block";
 }
 
 export class Todos extends Project{
@@ -438,3 +434,22 @@ function handleTodoForm() {
     })
      
 }*/
+
+
+
+export function showMyProjects() {
+    const myProjects = document.querySelector(".my-projects");
+    const contentsContainer = document.querySelector(".project-contents");
+    
+    myProjects.addEventListener("click", (event) => {
+        //const project = new Project(projectTitle, projectDescription);
+        contentsContainer.innerHTML = "";
+
+        contentsContainer.appendChild(event.target);
+
+        Project.createAddTodoButton();
+        handleAddTodoButton();
+
+
+    })
+}

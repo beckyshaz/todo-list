@@ -2,24 +2,217 @@
 import { format } from "date-fns";
 
 export class Project {
-    constructor (title, description){
+    constructor (title, description=""){
 
         this.title = title;
         this.description = description;
+        this.tasks = [];
     };
 
-   static createAddTodoButton() {
-        const addTodoButton = document.createElement("button");
-        addTodoButton.className = "add-todo";
-        addTodoButton.innerHTML = "add Todo";
-
-        const container = document.querySelector(".project-contents");
-
-        container.appendChild(addTodoButton);
-        //todoButton.addEventListener("click", createProjectForm);
+    addTaskToProject(task) {
+        this.tasks.push(task);
     }
 }
 
+export class Todos {
+    constructor (title,  dueDate=null, priority="low", notes="") {
+        this.title = title;
+        this.dueDate = dueDate;
+        this.priority = priority;
+        this.notes = notes;
+        this.completed = false;
+        this.id = new Date().now + Math.random();
+    }
+}
+
+const todo = new Todos("loving myself");
+console.log (todo);
+
+export class ProjectForm {
+    constructor() {
+
+        this.createProjectForm();
+
+        //this.projectTitleInput = this.ProjectForm.querySelector("#projectTitle");
+        //this.projectDescriptionInput = this.form.querySelector("#projectDescription");
+
+        this.bindEvents();
+    }
+
+    createProjectForm () {
+        this.projectForm = document.createElement("form");
+        this.projectForm.className = "project-form";
+        this.projectForm.style.display = "none";
+
+        
+        this.projectTitleInput = document.createElement("input");
+        this.projectTitleInput.type = "text";
+        this.projectTitleInput.id = "projectTitle";
+        this.projectTitleInput.placeholder = "Project Title";
+
+    
+        this.projectDescriptionInput = document.createElement("input");
+        this.projectDescriptionInput.id = "projectDescription";
+        this.projectDescriptionInput.placeholder = "Project Description";
+
+            
+        const submitBtn = document.createElement("button");
+        submitBtn.type = "button";
+        submitBtn.className = "submit-project";
+        submitBtn.textContent = "Submit";
+
+        
+        const cancelBtn = document.createElement("button");
+        cancelBtn.type = "button";
+        cancelBtn.className = "cancel submit";
+        cancelBtn.textContent = "Cancel";
+
+            
+        this.projectForm.append(
+                this.projectTitleInput,
+                this.projectDescriptionInput,
+                submitBtn,
+                cancelBtn
+            );
+
+            const projectFormDiv = document.querySelector(".project-form-div");
+            projectFormDiv.appendChild(this.projectForm);
+    }
+
+    bindEvents() {
+        const submitProjectBtn = this.projectForm.querySelector(".submit-project");
+        const cancelProjectBtn = this.projectForm.querySelector(".cancel.submit");
+        submitProjectBtn.addEventListener("click", (e) => this.handleSubmit(e));
+
+        cancelProjectBtn.addEventListener("click", () => this.hideForm());
+
+    }
+
+    handleSubmit(e) {
+
+        e.preventDefault();
+
+        const projectTitle = this.projectTitleInput.value;
+        const projectDescription = this.projectDescriptionInput.value;
+        this.createProject(projectTitle, projectDescription);
+        this.hideForm();
+    }
+
+    createProject(title, description) {
+        const myProjectDiv = document.createElement("div");
+        myProjectDiv.className = "project-container";
+        const titleH1 = document.createElement("h1");
+        titleH1.textContent = title;
+        const descriptionParag = document.createElement("p");
+        descriptionParag.textContent = description;
+        const myProjects = document.querySelector(".my-projects");
+        myProjectDiv.append(titleH1, descriptionParag);
+        myProjects.appendChild(myProjectDiv);
+        
+    }
+
+    hideForm() {
+        this.projectForm.style.display = "none";
+    }
+
+    showForm() {
+        this.projectForm.style.display = "block";
+    }
+
+    toggleForm() {
+        if (this.projectForm.style.display === "none") {
+            this.showForm();
+        }else {
+            this.hideForm();
+        }
+    }
+
+    focusForm() {
+        this.projectTitleInput.placeholder = "";
+        this.projectDescriptionInput.placeholder = "";
+        
+    }
+
+    resetForm() {
+        this.projectForm.reset();
+    }
+
+    handle() {
+        this.toggleForm();
+        this.resetForm();
+    }
+
+}
+
+export class AddBtnUI {
+    constructor() {
+        this.createAddTodoButton();
+    }
+    createAddTodoButton(handler) {
+        const addButton = document.createElement("button");
+        addButton.className = "add-project";
+        addButton.textContent = "Add Project";
+     
+         //const container = document.querySelector(".project-contents");
+     
+         //container.appendChild(addTodoButton);
+         //todoButton.addEventListener("click", createProjectForm);
+ 
+        if (handler && typeof handler.handle === "function") {
+             addButton.addEventListener("click", (e) => handler.handle(e));
+        }
+ 
+        else if (handler && typeof handler === "function") {
+             addButton.addEventListener("click", () =>  handle());
+        }
+        return addButton;
+     };
+     
+ }
+
+ 
+ /*export class ShowForm {
+
+    static showForm(handler) {
+        if (handler && typeof handler === "function") {
+            handler();
+        }
+        else if (handler && typeof handler.handle === "function") {
+            handler.handle();
+        }
+    }
+}*/
+
+/*export class HandleProjectForm {
+    constructor (projectForm) {
+        this.projectForm = projectForm;
+    }
+
+    handleProjectForm() {
+        //const projectForm = document.querySelector(".project-form");
+        if (!this.projectForm) {
+            return;
+        }
+        const submitProjectBtn = document.querySelector(".submit-project");
+        const cancelProjectBtn = document.querySelector(".cancel-project");
+        
+        submitProjectBtn.addEventListener("click", (event) => { 
+            event.preventDefault();
+            alert("Details submitted successfully");
+                    
+            this.projectForm.style.display = "none";
+                    
+           //const myProjects = document.querySelector(".my-projects");
+            myProjects.appendChild(projectTitleDiv);
+        });
+        
+        cancelProjectBtn.addEventListener("click", () => {
+            this.projectForm.style.display = "none";
+        });
+    }
+}
+
+//project = new ProjectUi()
 /*export function handleProjectCancelButton() {
 
     const projectcancelbutton = document.querySelector("cancel-project");
@@ -30,55 +223,9 @@ export class Project {
         })
 }*/
 
-export function handleCreateProject() {
-    const projectForm = document.querySelector(".project-form");
-    
-    if (!projectForm) {
-        return;
-    }
-
-    //createProjectForm();
-    const submitProjectBtn = document.querySelector(".submit-project");
-    const cancelProjectBtn = document.querySelector(".cancel-project");
-
-    submitProjectBtn.addEventListener("click", (event) => { 
-        event.preventDefault();
-        alert("Details submitted successfully");
-    
-            //const project = new Project()
-    
-        const titleInput = document.getElementById("title");
-        const projectTitle = titleInput.value;
-        
-        const descriptionInput = document.getElementById("project-description");
-        const projectDescription = descriptionInput.value;
-        
-        console.log(projectTitle);
-        console.log(projectDescription);
-        
-        projectForm.style.display = "none";
-        
-        const projectTitleDiv = document.createElement("div");
-        projectTitleDiv.innerHTML = `
-        <h1>${projectTitle}</h1>
-        <p>${projectDescription}</p>
-        `;
-        projectTitleDiv.style.backgroundColor = "red";
-        
-        const myProjects = document.querySelector(".my-projects");
-        myProjects.appendChild(projectTitleDiv);
-    });
-
-    cancelProjectBtn.addEventListener("click", () => {
-        projectForm.style.display = "none";
-    });
-    
-        //projectForm.style.display = "block";
-    
-}
     
 
-export function handleAddProjectBtn() {
+/*export function handleAddProjectBtn() {
     const addProjectBtn = document.querySelector(".add-project");
     addProjectBtn.addEventListener("click", () => {
         createProjectForm();
@@ -150,71 +297,21 @@ function handleTodoCheckbox() {
         }
     })
 }
-export function createProjectForm () {
-    let projectForm = document.querySelector(".project-form");
-
-    if (!projectForm) {
-        projectForm = document.createElement("form");
-        projectForm.className = "project-form";
-        const titleInput = document.createElement("input");
-        titleInput.type = "text";
-        titleInput.value = "Project Name";
-        titleInput.className = "project-name";
-        titleInput.id = "title"
-        titleInput.name = "project-name";
-        titleInput.style.color = "rgba(0, 0, 0, 0.4)";
-
-        const descriptionInput = document.createElement("input");
-        descriptionInput.value = "Description";
-        descriptionInput.name = "project-description";
-        descriptionInput.id = "project-description";
-        descriptionInput.style.color = "rgba(0, 0, 0, 0.4)";
-        descriptionInput.style.border = "none";
-
-        const buttonsDiv = document.createElement("div");
-        buttonsDiv.className = "buttons-div";
-
-        const submit = document.createElement("button");
-        submit.innerHTML = "Submit";
-        submit.type = "submit";
-        submit.className = "submit-project";
-
-        const cancelButton = document.createElement("button");
-        cancelButton.innerHTML = "Cancel";
-        cancelButton.classList = "cancel-project";
-        cancelButton.type = "button";
-
-        buttonsDiv.append(cancelButton, submit);
-
-        projectForm.append(titleInput, descriptionInput, buttonsDiv);
-
-        
 
 
-        const container = document.querySelector(".project-form-div");
+   
+const projectForm = new ProjectForm();
+const handleprojectform = new HandleProjectForm(projectForm);
+handleprojectform.handleProjectForm();
 
-        container.appendChild(projectForm);
-        handleCreateProject();
+*/
 
-            
-    }
-    projectForm.style.display = "block";
-}
 
-export class Todos extends Project{
-    constructor (title, description, dueDate, priority, notes, checklist) {
-        super(title, description);
-        this.dueDate = dueDate;
-        this.priority = priority;
-        this.notes = notes;
-        this.checklist = checklist;
-    }
-}
 
 //const todo = new Todos("washing", "washing clothes is diffult but we manage", 13, "low", "done")
 
 
-export function  createTodosForm () {
+/*export function  createTodosForm () {
     let todosForm = document.querySelector(".todo-form");
     //todosForm.style.display = "block";
 
@@ -364,7 +461,7 @@ export function  createTodosForm () {
     }
     todosForm.style.display = "block";
 }
-
+*/
 
 //export function handleSubmitTodo() {
    
@@ -437,7 +534,7 @@ function handleTodoForm() {
 
 
 
-export function showMyProjects() {
+/*export function showMyProjects() {
     const myProjects = document.querySelector(".my-projects");
     const contentsContainer = document.querySelector(".project-contents");
     
@@ -452,4 +549,4 @@ export function showMyProjects() {
 
 
     })
-}
+}*/

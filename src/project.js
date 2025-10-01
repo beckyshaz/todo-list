@@ -1,11 +1,24 @@
 
 import { format } from "date-fns";
 
+class StoreProject {
+    
+    constructor() {
+        this.projects = [];
+    }
+
+    addProject(project) {
+        this.projects.push(project);
+
+    } 
+}
+
 export class Project {
     constructor (title, description=""){
 
         this.title = title;
         this.description = description;
+        this.id = new Date() + Math.random();
         this.tasks = [];
     };
 
@@ -21,7 +34,7 @@ export class Todos {
         this.priority = priority;
         this.notes = notes;
         this.completed = false;
-        this.id = new Date().now + Math.random();
+        this.id = new Date() + Math.random();
     }
 }
 
@@ -92,21 +105,25 @@ export class ProjectForm {
 
         e.preventDefault();
 
-        const projectTitle = this.projectTitleInput.value;
-        const projectDescription = this.projectDescriptionInput.value;
-        this.createProject(projectTitle, projectDescription);
+        const project = new Project(this.projectTitleInput.value, this.projectDescriptionInput.value);
+        console.log(project);
+        const storeProject = new StoreProject()
+        storeProject.addProject(project);
+        console.log(storeProject);
+        this.createProject(project);
         this.hideForm();
     }
 
-    createProject(title, description) {
+    createProject(project) {
         const myProjectDiv = document.createElement("div");
         myProjectDiv.className = "project-container";
-        const titleH1 = document.createElement("h1");
-        titleH1.textContent = title;
+        myProjectDiv.id = project.id;
+        const titleH2 = document.createElement("h2");
+        titleH2.textContent = project.title;
         const descriptionParag = document.createElement("p");
-        descriptionParag.textContent = description;
-        const myProjects = document.querySelector(".my-projects");
-        myProjectDiv.append(titleH1, descriptionParag);
+        descriptionParag.textContent = project.description;
+        const myProjects = document.querySelector(".project-list");
+        myProjectDiv.append(titleH2, descriptionParag);
         myProjects.appendChild(myProjectDiv);
         
     }
@@ -127,12 +144,7 @@ export class ProjectForm {
         }
     }
 
-    focusForm() {
-        this.projectTitleInput.placeholder = "";
-        this.projectDescriptionInput.placeholder = "";
-        
-    }
-
+    
     resetForm() {
         this.projectForm.reset();
     }
@@ -149,9 +161,9 @@ export class AddBtnUI {
         this.createAddTodoButton();
     }
     createAddTodoButton(handler) {
-        const addButton = document.createElement("button");
-        addButton.className = "add-project";
-        addButton.textContent = "Add Project";
+        this.addButton = document.createElement("button");
+        this.addButton.className = "add-project";
+        this.addButton.textContent = "Add Project";
      
          //const container = document.querySelector(".project-contents");
      
@@ -159,16 +171,41 @@ export class AddBtnUI {
          //todoButton.addEventListener("click", createProjectForm);
  
         if (handler && typeof handler.handle === "function") {
-             addButton.addEventListener("click", (e) => handler.handle(e));
+             this.addButton.addEventListener("click", (e) => handler.handle(e));
         }
  
         else if (handler && typeof handler === "function") {
-             addButton.addEventListener("click", () =>  handle());
+             this.addButton.addEventListener("click", () =>  handler());
         }
-        return addButton;
+        return this.addButton;
      };
      
  }
+
+ export class SelectMyProjects {
+
+    constructor() {
+        this.monitorProjects();
+    }
+    monitorProjects() {
+        const myProjects = document.querySelector(".project-list");
+        const contentsContainer = document.querySelector(".contents");
+    
+        myProjects.addEventListener("click", (event) => {
+            //const project = new Project(projectTitle, projectDescription);
+            contentsContainer.innerHTML = "";
+
+            const copyContents = event.target.parentElement.cloneNode(true);
+
+            contentsContainer.appendChild(copyContents);
+            //const TodoBtn = new AddBtnUI();
+            //const addTodoBtn = TodoBtn.createAddTodoButton(todoForm);
+            //addTodoBtn.classname = "add-todo";
+            //addTodoBtn.textContent = "Add Todo";
+
+        })
+    }
+}
 
  
  /*export class ShowForm {
@@ -533,20 +570,3 @@ function handleTodoForm() {
 }*/
 
 
-
-/*export function showMyProjects() {
-    const myProjects = document.querySelector(".my-projects");
-    const contentsContainer = document.querySelector(".project-contents");
-    
-    myProjects.addEventListener("click", (event) => {
-        //const project = new Project(projectTitle, projectDescription);
-        contentsContainer.innerHTML = "";
-
-        contentsContainer.appendChild(event.target);
-
-        Project.createAddTodoButton();
-        handleAddTodoButton();
-
-
-    })
-}*/

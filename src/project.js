@@ -45,10 +45,6 @@ export class ProjectForm {
     constructor() {
 
         this.createProjectForm();
-
-        //this.projectTitleInput = this.ProjectForm.querySelector("#projectTitle");
-        //this.projectDescriptionInput = this.form.querySelector("#projectDescription");
-
         this.bindEvents();
     }
 
@@ -164,11 +160,6 @@ export class AddBtnUI {
         this.addButton = document.createElement("button");
         this.addButton.className = "add-project";
         this.addButton.textContent = "Add Project";
-     
-         //const container = document.querySelector(".project-contents");
-     
-         //container.appendChild(addTodoButton);
-         //todoButton.addEventListener("click", createProjectForm);
  
         if (handler && typeof handler.handle === "function") {
              this.addButton.addEventListener("click", (e) => handler.handle(e));
@@ -181,6 +172,166 @@ export class AddBtnUI {
      };
      
  }
+
+
+ export class TodosForm {
+    constructor() {
+        this.createTodoForm();
+        this.bindTodoEvents();
+    }
+    createTodoForm() {
+        this.todosForm = document.createElement("form");
+        this.todosForm.className = "todo-form";
+
+        this.titleTodoInput = document.createElement("input");
+        this.titleTodoInput.type = "text";
+        this.titleTodoInput.placeholder = "Visit my Grandmother together with my family";
+        this.titleTodoInput.id = "todo-title";
+        this.titleTodoInput.name = "todoTitle";
+    
+      /*  this.descriptionTodoInput = document.createElement("input");
+        this.descriptionTodoInput.placeholder = "Description";
+        this.descriptionTodoInput.style.color = "rgba(0, 0, 0, 0.4)";
+        this.descriptionTodoInput.name = "todoDescription";
+        this.descriptionTodoInput.id = "todo-description";*/
+    
+        this.dateInput = document.createElement("input");
+        this.dateInput.type = "date";
+        this.dateInput.id = "date";
+        this.dateInput.name = "date";
+    
+    
+        this.dateLabel = document.createElement("label");
+        this.dateLabel.className = "date-label";
+        this.dateLabel.setAttribute("for", "date");
+        this.dateLabel.textContent = "Set date";
+        
+        this.datepickerDiv = document.createElement("div");
+        this.datepickerDiv.className = "date-container";
+        this.datepickerDiv.append(this.dateLabel, this.dateInput);
+    
+    
+           
+        this.priority1 = document.createElement("input");
+        this.priority1.type = "checkbox";
+        this.priority1.name = "priority1";
+        this.priority1.id = "priority1";
+    
+        this.priority1label = document.createElement("label");
+        this.priority1label.textContent = "very High";
+        this.priority1label.setAttribute("for", "priority1");
+    
+        this.priority1Div = document.createElement("div");
+        this.priority1Div.className = "priority1";
+        this.priority1Div.append(this.priority1, this.priority1label);
+    
+    
+        this.priority2 = document.createElement("input");
+        this.priority2.type = "checkbox";
+        this.priority2.name = "priority2";
+        this.priority2.id = "priority2";
+    
+        this.priority2label = document.createElement("label");
+        this.priority2label.textContent = "High";
+        this.priority2label.setAttribute("for", "priority2");
+    
+        this.priority2Div = document.createElement("div");
+        this.priority2Div.className = "priority2";
+    
+        this.priority2Div.append(this.priority2, this.priority2label);
+    
+        this.priority3 = document.createElement("input");
+        this.priority3.type = "checkbox";
+        this.priority3.name = "priority3";
+        this.priority3.id = "priority3";
+    
+        this.priority3label = document.createElement("label");
+        this.priority3label.textContent = "Medium";
+        this.priority3label.setAttribute("for", "priority3");
+    
+        this.priority3Div = document.createElement("div");
+        this.priority3Div.className = "priority3";
+    
+        this.priority3Div.append(this.priority3, this.priority3label);
+    
+        this.priority4 = document.createElement("input");
+        this.priority4.type = "checkbox";
+        this.priority4.name = "priority4";
+        this.priority4.id = "priority4";
+    
+        this.priority4label = document.createElement("label");
+        this.priority4label.textContent = "Low";
+        this.priority4label.setAttribute("for", "priority4");
+    
+        this.priority4Div = document.createElement("div");
+        this.priority4Div.className = "priority4";
+    
+        this.priority4Div.append(this.priority4, this.priority4label);
+
+        this.prioritiesDiv = document.createElement("div");
+        this.prioritiesDiv.textContent = "Priorities";
+    
+            
+        this.prioritiesDiv.append(this.priority1Div, this.priority2Div, this.priority3Div, this.priority4Div );
+    
+        this.notesLabel = document.createElement("label");
+        this.notesLabel.textContent = "Notes";
+        
+        this.todoNotes = document.createElement("textarea");
+        this.todoNotes.name = "notes";
+        this.todoNotes.rows = "10";
+        this.todoNotes.cols = "50";
+
+        this.todoNotesDiv = document.createElement("div");
+        this.todoNotesDiv.className = "notes-div";
+        this.todoNotesDiv.append(this.notesLabel, this.todoNotes);
+    
+        const submitTodo = document.createElement("button");
+        submitTodo.innerHTML = "Submit";
+        submitTodo.type = "submit";
+        submitTodo.className = "submit-todo";
+            
+    
+        const todoCancelButton = document.createElement("button");
+        todoCancelButton.textContent = "Cancel";
+        todoCancelButton.className = "cancel-todo";
+        todoCancelButton.type = "button";
+
+        this.todoButtonsDiv = document.createElement("div");
+        this.todoButtonsDiv.className = "todo-buttons-div";
+        todoButtonsDiv.append(todoCancelButton, submitTodo);
+
+        this.todoFormDetailsDiv = document.createElement("div");
+        this.todoFormDetailsDiv.className = "form-input-container";
+    
+    
+        this.todoFormDetailsDiv.append(titleTodoInput, descriptionTodoInput, datepickerDiv, prioritiesDiv, todoNotesDiv, todoButtonsDiv);
+            
+        this.todosForm.appendChild(this.todoFormDetailsDiv);
+            
+        const todoFormContainer = document.querySelector(".todo-form-div");
+    
+        todoFormContainer.appendChild(this.todosForm);
+    }
+
+    bindTodoEvents() {
+        const submitTodoBtn = document.querySelector(".submit-todo");
+        submitTodoBtn.addEventListener("click", (e) => this.todosForm.handleSubmitTodo(e));
+
+        const cancelTodoBtn = document.querySelector(".cancel-todo");
+        cancelTodoBtn.addEventListener("click", () => hideTodoForm());
+    }
+
+
+    handleSubmitTodo(e) {
+        e.preventDefault();
+        const todo  = new Todos(this.titleTodoInput.value, dateInput.value, this.todoNotes.value);
+        
+    }
+    
+}
+
+
 
  export class SelectMyProjects {
 
@@ -207,69 +358,8 @@ export class AddBtnUI {
     }
 }
 
- 
- /*export class ShowForm {
-
-    static showForm(handler) {
-        if (handler && typeof handler === "function") {
-            handler();
-        }
-        else if (handler && typeof handler.handle === "function") {
-            handler.handle();
-        }
-    }
-}*/
-
-/*export class HandleProjectForm {
-    constructor (projectForm) {
-        this.projectForm = projectForm;
-    }
-
-    handleProjectForm() {
-        //const projectForm = document.querySelector(".project-form");
-        if (!this.projectForm) {
-            return;
-        }
-        const submitProjectBtn = document.querySelector(".submit-project");
-        const cancelProjectBtn = document.querySelector(".cancel-project");
-        
-        submitProjectBtn.addEventListener("click", (event) => { 
-            event.preventDefault();
-            alert("Details submitted successfully");
-                    
-            this.projectForm.style.display = "none";
-                    
-           //const myProjects = document.querySelector(".my-projects");
-            myProjects.appendChild(projectTitleDiv);
-        });
-        
-        cancelProjectBtn.addEventListener("click", () => {
-            this.projectForm.style.display = "none";
-        });
-    }
-}
-
-//project = new ProjectUi()
-/*export function handleProjectCancelButton() {
-
-    const projectcancelbutton = document.querySelector("cancel-project");
-        projectcancelbutton.addEventListener("click", () => {
-            const projectForm = document.querySelector(".project-form");
-            alert("You unsaved details will be discarded");
-            projectForm.style.display = "none";
-        })
-}*/
-
     
-
-/*export function handleAddProjectBtn() {
-    const addProjectBtn = document.querySelector(".add-project");
-    addProjectBtn.addEventListener("click", () => {
-        createProjectForm();
-    });
-}
-
-function handleAddTodoButton () { 
+/*function handleAddTodoButton () { 
     const addTodoButton = document.querySelector(".add-todo");
     addTodoButton.addEventListener("click", () => {
         createTodosForm();
@@ -333,170 +423,6 @@ function handleTodoCheckbox() {
             completedTodoDiv.appendChild(todoTitleContainer);
         }
     })
-}
-
-
-   
-const projectForm = new ProjectForm();
-const handleprojectform = new HandleProjectForm(projectForm);
-handleprojectform.handleProjectForm();
-
-*/
-
-
-
-//const todo = new Todos("washing", "washing clothes is diffult but we manage", 13, "low", "done")
-
-
-/*export function  createTodosForm () {
-    let todosForm = document.querySelector(".todo-form");
-    //todosForm.style.display = "block";
-
-    if (!todosForm) {
-        todosForm = document.createElement("form");
-        todosForm.className = "todo-form";
-        const titleTodoInput = document.createElement("input");
-        titleTodoInput.type = "text";
-        titleTodoInput.value = "Visit my Grandmother together with my family";
-        titleTodoInput.style.color = "rgba(0, 0, 0, 0.4)";
-        titleTodoInput.id = "todo-title";
-
-        const descriptionTodoInput = document.createElement("input");
-        descriptionTodoInput.value = "Description";
-        descriptionTodoInput.style.color = "rgba(0, 0, 0, 0.4)";
-        descriptionTodoInput.style.border = "none";
-        descriptionTodoInput.id = "todo-description";
-
-        const featuresContainer = document.createElement("div");
-        featuresContainer.className = "todo-features-container";
-
-        const dateInput = document.createElement("input");
-        dateInput.type = "date";
-
-        //const currentDate = format(new Date(), "yyyy-MM-dd");
-        //console.log(currentDate);
-        //dateInput.value = currentDate;
-
-        dateInput.id = "mydate";
-        dateInput.name = "date";
-
-        //const currentDate = format(new Date(), "yyyy-MM-dd");
-        //console.log(currentDate);
-
-        const dateLabel = document.createElement("label");
-        dateLabel.className = "date-label";
-        dateLabel.setAttribute("for", "mydate");
-        dateLabel.innerHTML = "Set date";
-        
-        
-        const datepickerDiv = document.createElement("div");
-        datepickerDiv.append(dateLabel,dateInput);
-
-
-        const prioritiesDiv = document.createElement("div");
-        prioritiesDiv.textContent = "Priorities";
-        const priority1 = document.createElement("input");
-        priority1.type = "checkbox";
-        priority1.name = "priority1";
-        priority1.id = "priority1";
-
-        const priority1label = document.createElement("label");
-        priority1label.textContent = "very High";
-        priority1label.setAttribute("for", "priority1");
-
-        const priority1Div = document.createElement("div");
-        priority1Div.className = "priority1";
-
-        priority1Div.append(priority1, priority1label);
-
-
-        const priority2 = document.createElement("input");
-        priority2.type = "checkbox";
-        priority2.name = "priority2";
-        priority2.id = "priority2";
-
-        const priority2label = document.createElement("label");
-        priority2label.textContent = "High";
-        priority2label.setAttribute("for", "priority2");
-
-        const priority2Div = document.createElement("div");
-        priority2Div.className = "priority2";
-
-        priority2Div.append(priority2, priority2label);
-
-        const priority3 = document.createElement("input");
-        priority3.type = "checkbox";
-        priority3.name = "priority3";
-        priority3.id = "priority3";
-
-        const priority3label = document.createElement("label");
-        priority3label.textContent = "Medium";
-        priority3label.setAttribute("for", "priority3");
-
-        const priority3Div = document.createElement("div");
-        priority3Div.className = "priority3";
-
-        priority3Div.append(priority3, priority3label);
-
-        const priority4 = document.createElement("input");
-        priority4.type = "checkbox";
-        priority4.name = "priority4";
-        priority4.id = "priority4";
-
-        const priority4label = document.createElement("label");
-        priority4label.textContent = "Low";
-        priority4label.setAttribute("for", "priority4");
-
-        const priority4Div = document.createElement("div");
-        priority4Div.className = "priority4";
-
-        priority4Div.append(priority4, priority4label);
-
-        
-        prioritiesDiv.append(priority1Div,priority2Div, priority3Div, priority4Div );
-
-        const todoNotesDiv = document.createElement("div");
-        todoNotesDiv.className = "notes-div";
-
-        const notesLabel = document.createElement("label");
-        notesLabel.textContent = "Notes";
-
-        const todoNotes = document.createElement("textarea");
-        todoNotes.name = "notes";
-        todoNotes.rows = "10";
-        todoNotes.cols = "50";
-
-        todoNotesDiv.append(notesLabel, todoNotes);
-
-        const todoButtonsDiv = document.createElement("div");
-        todoButtonsDiv.className = "todo-buttons-div";
-
-        const submitTodo = document.createElement("button");
-        submitTodo.innerHTML = "Submit";
-        submitTodo.type = "submit";
-        submitTodo.className = "submit-todo";
-        
-
-        const todoCancelButton = document.createElement("button");
-        todoCancelButton.innerHTML = "Cancel";
-        todoCancelButton.className = "cancel-todo";
-        todoCancelButton.type = "button";
-
-        todoButtonsDiv.append(todoCancelButton, submitTodo);
-
-
-        featuresContainer.append(titleTodoInput, descriptionTodoInput, datepickerDiv, prioritiesDiv, todoNotesDiv, todoButtonsDiv);
-        
-        todosForm.appendChild(featuresContainer);
-        
-        const container = document.querySelector(".todo-form-div");
-
-        container.appendChild(todosForm);
-
-        handleTodoForm();
-        
-    }
-    todosForm.style.display = "block";
 }
 */
 

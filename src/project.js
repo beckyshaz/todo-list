@@ -11,6 +11,8 @@ class StoreProject {
         this.projects.push(project);
 
     } 
+
+    
 }
 
 export class Project {
@@ -326,10 +328,51 @@ export class AddBtnUI {
     handleSubmitTodo(e) {
         e.preventDefault();
         const todo  = new Todos(this.titleTodoInput.value, dateInput.value, this.todoNotes.value);
-        
-    }
+        const myProjects = document.querySelector(".project-list");
+        //const contentsContainer = document.querySelector(".contents");
     
+        myProjects.addEventListener("click", (event) => {
+            const currentProjectDiv = event.target;
+            
+            const projectId = event.target.id;
+            console.log(projectId);
+            const storedProjects = new StoreProject();
+            console.log(currentProject);
+            const currentProject = storedProjects.find((project) => project.id === projectId);
+            if (currentProject) {
+                currentProject.addTaskToProject(todo);
+            }
+            this.createTodo(currentProjectDiv, todo);
+            this.hideTodoForm();
+        });
+    }
+
+    createTodo(parentElement, todo) {
+        parentElement.appendChild(todo);
+        
+
+    }
+    hideTodoForm() {
+        this.todosForm.style.display = "none";
+    }
+
+    showTodoform() {
+        this.todosForm.style.display = "block";
+    }
+
+    toggleTodoForm() {
+        if (this.todosForm.style.display === "none") {
+            this.showTodoform();
+        }else{
+            this.hideTodoForm();
+        }
+    }
+
+    handle() {
+        this.toggleTodoForm();
+    }
 }
+    
 
 
 

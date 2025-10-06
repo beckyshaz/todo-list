@@ -8,6 +8,9 @@ import { AddBtnUI } from "./project";
 import { SelectMyProjects } from "./project";
 
 
+import { TodosForm } from "./project";
+
+
 
 
 //const project = new Project("Love", "love is a beautiful thing when founded"); 
@@ -46,11 +49,13 @@ console.log(projectAddBtn);
 const myProjects = document.querySelector(".my-projects");
 myProjects.appendChild(projectAddBtn);
 
-const TodoBtn = new AddBtnUI();
+//const TodoBtn = new AddBtnUI();
 
 /*const addTodoBtn = TodoBtn.createAddTodoButton(todoForm);
 addTodoBtn.classname = "add-todo";
 addTodoBtn.textContent = "Add Todo";*/
 
 const selectProject = new SelectMyProjects();
-selectProject.monitorProjects();
+//selectProject.createAddTodoButton();
+
+

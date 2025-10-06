@@ -2,9 +2,16 @@
 import { format } from "date-fns";
 
 class StoreProject {
+
+    static instance = null;
     
     constructor() {
+
+        if (StoreProject.instance) {
+            return StoreProject.instance;
+        }
         this.projects = [];
+        StoreProject.instance = this;
     }
 
     addProject(project) {
@@ -12,6 +19,9 @@ class StoreProject {
 
     } 
 
+    getProjects() {
+        return this.projects;
+    }
     
 }
 
@@ -180,10 +190,14 @@ export class AddBtnUI {
     constructor() {
         this.createTodoForm();
         this.bindTodoEvents();
+
+        //this.form.style.display = "none";
     }
     createTodoForm() {
+        
         this.todosForm = document.createElement("form");
         this.todosForm.className = "todo-form";
+        this.todosForm.style.display = "none";
 
         this.titleTodoInput = document.createElement("input");
         this.titleTodoInput.type = "text";
@@ -301,13 +315,14 @@ export class AddBtnUI {
 
         this.todoButtonsDiv = document.createElement("div");
         this.todoButtonsDiv.className = "todo-buttons-div";
-        todoButtonsDiv.append(todoCancelButton, submitTodo);
+        this.todoButtonsDiv.append(todoCancelButton, submitTodo);
 
         this.todoFormDetailsDiv = document.createElement("div");
         this.todoFormDetailsDiv.className = "form-input-container";
     
     
-        this.todoFormDetailsDiv.append(titleTodoInput, descriptionTodoInput, datepickerDiv, prioritiesDiv, todoNotesDiv, todoButtonsDiv);
+        this.todoFormDetailsDiv.append(this.titleTodoInput, this.descriptionTodoInput,
+            this.datepickerDiv, this.prioritiesDiv, this.todoNotesDiv, this.todoButtonsDiv);
             
         this.todosForm.appendChild(this.todoFormDetailsDiv);
             
@@ -318,38 +333,67 @@ export class AddBtnUI {
 
     bindTodoEvents() {
         const submitTodoBtn = document.querySelector(".submit-todo");
-        submitTodoBtn.addEventListener("click", (e) => this.todosForm.handleSubmitTodo(e));
+        submitTodoBtn.addEventListener("click", (e) => this.handleSubmitTodo(e));
 
         const cancelTodoBtn = document.querySelector(".cancel-todo");
-        cancelTodoBtn.addEventListener("click", () => hideTodoForm());
+        cancelTodoBtn.addEventListener("click", () => this.hideTodoForm());
     }
 
 
     handleSubmitTodo(e) {
         e.preventDefault();
-        const todo  = new Todos(this.titleTodoInput.value, dateInput.value, this.todoNotes.value);
-        const myProjects = document.querySelector(".project-list");
-        //const contentsContainer = document.querySelector(".contents");
-    
-        myProjects.addEventListener("click", (event) => {
-            const currentProjectDiv = event.target;
+        const todo  = new Todos(this.titleTodoInput.value, this.dateInput.value, this.todoNotes.value);
+        const projectContents = document.querySelector(".contents");
+
+        const currentProjectContainer = projectContents.children[0];
+
+        const currentProjectId = currentProjectContainer.id;
+
+        const storedProjects = new StoreProject();
+        const projectList = storedProjects.getProjects();
+        console.log(projectList);
+        
+
+        const currentProject = projectList.find((project) => project.id === currentProjectId);
+        console.log(currentProject);
+
+        currentProject.addTaskToProject(todo);
+
+        //this.createAddTodoButton(projectContents);
+
+        this.createTodo(currentProjectContainer, todo);
             
-            const projectId = event.target.id;
-            console.log(projectId);
-            const storedProjects = new StoreProject();
-            console.log(currentProject);
-            const currentProject = storedProjects.find((project) => project.id === projectId);
-            if (currentProject) {
-                currentProject.addTaskToProject(todo);
-            }
-            this.createTodo(currentProjectDiv, todo);
-            this.hideTodoForm();
-        });
     }
 
+
     createTodo(parentElement, todo) {
-        parentElement.appendChild(todo);
-        
+       
+        const title = todo.title;
+        const date = todo.date;
+        //const notes = todo.notes;
+
+        const tododiv = document.createElement("div");
+        const todoCheckListDiv = document.createElement("div");
+        const todoCheckList = document.createElement("input");
+        todoCheckList.type = "checkbox";
+        todoCheckList.name = "todo";
+        todoCheckList.id = todo.id;
+        todoCheckList.textContent = title;
+
+
+
+        const todoCheckListLabel = document.createElement("label");
+        todoCheckListLabel.setAttribute("for", todo.id);
+        todoCheckListLabel.textContent = todo.title;
+
+        todoCheckListDiv.append(todoCheckList, todoCheckListLabel);
+
+        const dateDiv = document.createElement("div");
+        dateDiv.textContent = date;
+
+        tododiv.append(todoCheckListDiv, dateDiv);
+
+        parentElement.appendChild(tododiv);        
 
     }
     hideTodoForm() {
@@ -380,6 +424,7 @@ export class AddBtnUI {
 
     constructor() {
         this.monitorProjects();
+        //this.createAddTodoButton();
     }
     monitorProjects() {
         const myProjects = document.querySelector(".project-list");
@@ -396,8 +441,19 @@ export class AddBtnUI {
             //const addTodoBtn = TodoBtn.createAddTodoButton(todoForm);
             //addTodoBtn.classname = "add-todo";
             //addTodoBtn.textContent = "Add Todo";
+            const addBtn = this.createAddTodoButton();
+            contentsContainer.appendChild(addBtn);
+        });
+    }
 
-        })
+    createAddTodoButton() {
+        const todoForm = new TodosForm();
+        console.log(todoForm);
+        const todoAddBtn = new AddBtnUI();
+        const addTodoBtn = todoAddBtn.createAddTodoButton(todoForm);
+        console.log(addTodoBtn);
+        //const contentsContainer = document.querySelector(".contents");
+        return addTodoBtn;
     }
 }
 

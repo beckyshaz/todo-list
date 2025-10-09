@@ -1,15 +1,34 @@
 
 import "./styles.css";
 
+//import { ProjectForm } from "./project";
+
+//import { AddBtnUI } from "./project";
+
+//import { SelectMyProjects } from "./project";
+
+
+//import { TodosForm } from "./project";
+
+import { UIComponents } from "./UIComponents";
+
 import { ProjectForm } from "./project";
 
-import { AddBtnUI } from "./project";
+const projectformInstance = new ProjectForm();
 
-import { SelectMyProjects } from "./project";
+const projectForm = projectformInstance.getProjectForm();
+
+const projectFormContainer = document.querySelector(".project-form-div");
+projectFormContainer.appendChild(projectForm);
+
+const projectFormHandlers = projectformInstance.getProjectFormHandlers();
 
 
-import { TodosForm } from "./project";
 
+const projectAddBtn = UIComponents.createAddButton(projectFormHandlers);
+
+const myProjects = document.querySelector(".my-projects");
+myProjects.appendChild(projectAddBtn);
 
 
 
@@ -41,13 +60,13 @@ import { TodosForm } from "./project";
 //console.log(addBtn);
 
 
-const projectForm = new ProjectForm();
-console.log (projectForm);
-const addBtn = new AddBtnUI();
-const projectAddBtn = addBtn.createAddTodoButton(projectForm);
-console.log(projectAddBtn);
-const myProjects = document.querySelector(".my-projects");
-myProjects.appendChild(projectAddBtn);
+//const projectForm = new ProjectForm();
+//console.log (projectForm);
+//const addBtn = new AddBtnUI();
+//const projectAddBtn = addBtn.createAddTodoButton(projectForm);
+//console.log(projectAddBtn);
+//const myProjects = document.querySelector(".my-projects");
+//myProjects.appendChild(projectAddBtn);
 
 //const TodoBtn = new AddBtnUI();
 
@@ -55,7 +74,7 @@ myProjects.appendChild(projectAddBtn);
 addTodoBtn.classname = "add-todo";
 addTodoBtn.textContent = "Add Todo";*/
 
-const selectProject = new SelectMyProjects();
+//const selectProject = new SelectMyProjects();
 //selectProject.createAddTodoButton();
 
 

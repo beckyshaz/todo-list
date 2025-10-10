@@ -1,3 +1,7 @@
+import { CreateForm } from "./createForm";
+
+import { TodoFormHandlers } from "./todoFormhandlers";
+
 export class Todos {
     constructor (title,  dueDate=null, priority="low", notes="") {
         this.title = title;
@@ -11,8 +15,16 @@ export class Todos {
 
 export class TodosForm {
     constructor() {
-        this.CreateForm.createTodoForm();
-        this.bindTodoEvents();
+        this.form = CreateForm.createTodoForm();
+        this.handler = new TodoFormHandlers(this.form);
+    }
+
+    getTodoForm() {
+        return this.form;
+    }
+
+    getTodoFormHandlers() {
+        return this.handler;
     }
     
 }

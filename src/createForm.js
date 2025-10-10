@@ -98,11 +98,13 @@ export class CreateForm {
     
         this.notesLabel = document.createElement("label");
         this.notesLabel.textContent = "Notes";
+        this.notesLabel.setAttribute("for", "notes");
         
         this.todoNotes = document.createElement("textarea");
         this.todoNotes.name = "notes";
         this.todoNotes.rows = "10";
         this.todoNotes.cols = "50";
+        this.todoNotes.id = "notes";
 
         this.todoNotesDiv = document.createElement("div");
         this.todoNotesDiv.className = "notes-div";

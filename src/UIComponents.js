@@ -1,3 +1,7 @@
+
+import { TodosForm } from "./todos";
+//import { CreateForm } from "./createForm";
+
 export class UIComponents {
     
     static createAddButton(handler) {
@@ -16,10 +20,16 @@ export class UIComponents {
      };
 
     static createAddTodoButton() {
-        const todoForm = new TodosForm();
-        console.log(todoForm);
-        const todoAddBtn = new AddBtnUI();
-        const addTodoBtn = todoAddBtn.createAddTodoButton(todoForm);
+        const todoFormObject = new TodosForm();
+        const handler = todoFormObject.getTodoFormHandlers();
+        
+
+        const todoform = todoFormObject.getTodoForm();
+        const todoFormContainer = document.querySelector(".todo-form-div");
+        todoFormContainer.appendChild(todoform);
+        const addTodoBtn = this.createAddButton(handler);
+        addTodoBtn.textContent = "Add tasks";
+        addTodoBtn.className = "add-todoBtn";
         console.log(addTodoBtn);
         //const contentsContainer = document.querySelector(".contents");
         return addTodoBtn;
@@ -40,8 +50,10 @@ export class UIComponents {
         myProjects.appendChild(myProjectDiv);
 
         const contentsContainer = document.querySelector(".contents");
+        contentsContainer.innerHTML = "";
         contentsContainer.appendChild(copyCreatedProject);
-        
+        const addTodoBtn = this.createAddTodoButton();
+        contentsContainer.appendChild(addTodoBtn);
     }
 
     monitorProjects() {

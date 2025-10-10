@@ -1,17 +1,35 @@
+import { Todos } from "./todos";
+
+import { StoreProject } from "./storeProject";
+
+import { UIComponents } from "./UIComponents";
+
 export class TodoFormHandlers {
+
+    constructor(form) {
+        this.form = form;
+        this.bindTodoEvents();
+    }
+
     bindTodoEvents() {
-            const submitTodoBtn = document.querySelector(".submit-todo");
+            const submitTodoBtn = this.form.querySelector(".submit-todo");
             submitTodoBtn.addEventListener("click", (e) => this.handleSubmitTodo(e));
     
-            const cancelTodoBtn = document.querySelector(".cancel-todo");
+            const cancelTodoBtn = this.form.querySelector(".cancel-todo");
             cancelTodoBtn.addEventListener("click", () => this.hideTodoForm());
         }
     
     
         handleSubmitTodo(e) {
             e.preventDefault();
-            const todo  = new Todos(this.titleTodoInput.value, this.dateInput.value, this.todoNotes.value);
+            const titleTodoInput = this.form.querySelector("#todo-title");
+            const dateInput = this.form.querySelector("#date");
+            const todoNotes = this.form.querySelector("#notes");
+
+            const todo  = new Todos(titleTodoInput.value, dateInput.value, todoNotes.value);
             const projectContents = document.querySelector(".contents");
+
+            //projectContents.innerHTML = "";
     
             const currentProjectContainer = projectContents.children[0];
     
@@ -29,7 +47,7 @@ export class TodoFormHandlers {
     
             //this.createAddTodoButton(projectContents);
     
-            this.createTodo(currentProjectContainer, todo);
+            UIComponents.createTodo(currentProjectContainer, todo);
             this.resetTodoForm();
             this.hideTodoForm();
                 
@@ -38,19 +56,19 @@ export class TodoFormHandlers {
     
         resetTodoForm() {
     
-            this.todosForm.reset();
+            this.form.reset();
         }
     
         hideTodoForm() {
-            this.todosForm.style.display = "none";
+            this.form.style.display = "none";
         }
     
         showTodoform() {
-            this.todosForm.style.display = "block";
+            this.form.style.display = "block";
         }
     
         toggleTodoForm() {
-            if (this.todosForm.style.display === "none") {
+            if (this.form.style.display === "none") {
                 this.showTodoform();
             }else{
                 this.hideTodoForm();

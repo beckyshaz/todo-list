@@ -14,6 +14,10 @@ import { UIComponents } from "./UIComponents";
 
 import { ProjectForm } from "./project";
 
+import { TodosForm } from "./todos";
+
+
+
 const projectformInstance = new ProjectForm();
 
 const projectForm = projectformInstance.getProjectForm();
@@ -31,7 +35,8 @@ const myProjects = document.querySelector(".my-projects");
 myProjects.appendChild(projectAddBtn);
 
 
-
+const todoForm = new TodosForm();
+console.log(todoForm);
 //const project = new Project("Love", "love is a beautiful thing when founded"); 
 //console.log(project);
 

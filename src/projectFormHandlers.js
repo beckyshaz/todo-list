@@ -27,11 +27,27 @@ export class ProjectFormHandlers {
     
         const project = new Project(projectTitleInput.value, projectDescriptionInput.value);
         console.log(project);
-        const storeProject = new StoreProject()
-        storeProject.addProject(project);
-        console.log(storeProject);
-        UIComponents.createProject(project);
-        this.hideForm();
+        const storeProject = new StoreProject();
+       
+        const storedProjects = storeProject.getProjects();
+        console.log(storedProjects);
+
+        const checkProject = storedProjects.find((p) => (p.title === project.title) && (p.description === project.description));
+        console.log(checkProject);
+        
+        if (!checkProject) {
+            storeProject.addProject(project);
+            UIComponents.createProject(project);
+            this.hideForm();
+            
+        }
+
+        else {
+            //UIComponents.createProject();
+            
+            this.hideForm();
+        }
+    
     }
     
     hideForm() {

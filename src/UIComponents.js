@@ -1,4 +1,5 @@
 
+import { StoreProject } from "./storeProject";
 import { TodosForm } from "./todos";
 //import { CreateForm } from "./createForm";
 
@@ -35,7 +36,9 @@ export class UIComponents {
         return addTodoBtn;
     }
 
+
     static createProject(project) {
+
         const myProjectDiv = document.createElement("div");
         myProjectDiv.className = "project-container";
         myProjectDiv.id = project.id;
@@ -46,37 +49,111 @@ export class UIComponents {
         const myProjects = document.querySelector(".project-list");
         myProjectDiv.append(titleH2, descriptionParag);
         const copyCreatedProject = myProjectDiv.cloneNode(true);
-       
         myProjects.appendChild(myProjectDiv);
-
-        const contentsContainer = document.querySelector(".contents");
-        contentsContainer.innerHTML = "";
-        contentsContainer.appendChild(copyCreatedProject);
+            
+        this.contentsContainer = document.querySelector(".contents");
+        this.contentsContainer.innerHTML = "";
+        this.contentsContainer.appendChild(copyCreatedProject);
         const addTodoBtn = this.createAddTodoButton();
-        contentsContainer.appendChild(addTodoBtn);
+        this.contentsContainer.appendChild(addTodoBtn);
+
     }
 
-    monitorProjects() {
+    static showProjects() {
+
+        const store = new StoreProject();
+
+        const projectArray = store.getProjects();
+
+
+        projectArray.map((project) => {
+            const myProjectDiv = document.createElement("div");
+            myProjectDiv.className = "project-container";
+            myProjectDiv.id = project.id;
+            const titleH2 = document.createElement("h2");
+            titleH2.textContent = project.title;
+            const descriptionParag = document.createElement("p");
+            descriptionParag.textContent = project.description;
+            const myProjects = document.querySelector(".project-list");
+            myProjectDiv.append(titleH2, descriptionParag);
+            const copyCreatedProject = myProjectDiv.cloneNode(true);
+            myProjects.appendChild(myProjectDiv);
+            
+            this.contentsContainer = document.querySelector(".contents");
+            this.contentsContainer.innerHTML = "";
+            this.contentsContainer.appendChild(copyCreatedProject);
+            const addTodoBtn = this.createAddTodoButton();
+            this.contentsContainer.appendChild(addTodoBtn);
+        })
+        
+    }
+
+    static monitorProjects() {
         const myProjects = document.querySelector(".project-list");
-        const contentsContainer = document.querySelector(".contents");
+        this.contentsContainer = document.querySelector(".contents");
     
         myProjects.addEventListener("click", (event) => {
             //const project = new Project(projectTitle, projectDescription);
-            contentsContainer.innerHTML = "";
+            this.contentsContainer.innerHTML = "";
+
+            const currentProject = event.target.parentElement;
 
             const copyContents = event.target.parentElement.cloneNode(true);
+            console.log(currentProject);
+            const currentProjectId = event.target.parentElement.id;
 
-            contentsContainer.appendChild(copyContents);
+            const storedProjects = new StoreProject();
+            console.log(storedProjects);
+            
+            const projectByID = storedProjects.getProjectsByID(currentProjectId);
+            console.log(projectByID);
+
+        
+            if (projectByID) {
+                this.contentsContainer.appendChild(copyContents);
+                const addBtn = this.createAddTodoButton();
+                this.contentsContainer.appendChild(addBtn);
+
+                const projectTodo = projectByID.getProjectTodo();
+                console.log(projectTodo);
+
+
+                this.showTodo(projectTodo);
+
+
+            }else {
+            console.log("Project not found with ID:", currentProjectId);
+        }
+
+            
+
+            //this.contentsContainer.appendChild(copyContents);
+           // this.contentsContainer.appendChild(addBtn);
+            
+
             //const TodoBtn = new AddBtnUI();
             //const addTodoBtn = TodoBtn.createAddTodoButton(todoForm);
             //addTodoBtn.classname = "add-todo";
             //addTodoBtn.textContent = "Add Todo";
-            const addBtn = this.createAddTodoButton();
-            contentsContainer.appendChild(addBtn);
+
+           
+        
         });
     }
 
-     static createTodo(parentElement, todo) {
+    static showTodo(todoArray) {
+        if (todoArray && todoArray.length > 0) {
+            todoArray.forEach((todo) => {
+                this.createTodo(todo);
+            });
+            
+        }else {
+            console.log("no todos found");
+        }
+        
+    }
+
+     static createTodo(todo) {
        
         const title = todo.title;
         const date = todo.date;
@@ -103,7 +180,7 @@ export class UIComponents {
 
         tododiv.append(todoCheckListDiv, dateDiv);
 
-        parentElement.appendChild(tododiv);        
+        this.contentsContainer.appendChild(tododiv);        
 
     }
 

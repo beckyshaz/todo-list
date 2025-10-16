@@ -40,46 +40,11 @@ console.log(todoForm);
 //const project = new Project("Love", "love is a beautiful thing when founded"); 
 //console.log(project);
 
-//const todo = new Todos("washing");
-//console.log(todo);
+UIComponents.showProjects();
 
-//createProjectForm();
-
-//createTodosForm();
-
-//listProjects();
-
-//handleProjectCancelButton()
-//handleAddTodoButton()
-
-//handleSubmitTodo();
-
-//handleTodoForm();
-
-//handleAddProjectBtn();
-
-//showMyProjects();
+UIComponents.monitorProjects();
 
 
-//addBtn.crea
-//console.log(addBtn);
 
-
-//const projectForm = new ProjectForm();
-//console.log (projectForm);
-//const addBtn = new AddBtnUI();
-//const projectAddBtn = addBtn.createAddTodoButton(projectForm);
-//console.log(projectAddBtn);
-//const myProjects = document.querySelector(".my-projects");
-//myProjects.appendChild(projectAddBtn);
-
-//const TodoBtn = new AddBtnUI();
-
-/*const addTodoBtn = TodoBtn.createAddTodoButton(todoForm);
-addTodoBtn.classname = "add-todo";
-addTodoBtn.textContent = "Add Todo";*/
-
-//const selectProject = new SelectMyProjects();
-//selectProject.createAddTodoButton();
 
 

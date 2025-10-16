@@ -34,20 +34,22 @@ export class TodoFormHandlers {
             const currentProjectContainer = projectContents.children[0];
     
             const currentProjectId = currentProjectContainer.id;
+            console.log(currentProjectId);
     
             const storedProjects = new StoreProject();
-            const projectList = storedProjects.getProjects();
-            console.log(projectList);
+            const projectById = storedProjects.getProjectsByID(currentProjectId);
+            console.log(projectById);
             
     
-            const currentProject = projectList.find((project) => project.id === currentProjectId);
-            console.log(currentProject);
+        
     
-            currentProject.addTaskToProject(todo);
+            projectById.addTaskToProject(todo);
+
+            storedProjects.updateProject(projectById);
     
             //this.createAddTodoButton(projectContents);
     
-            UIComponents.createTodo(currentProjectContainer, todo);
+            UIComponents.createTodo(todo);
             this.resetTodoForm();
             this.hideTodoForm();
                 

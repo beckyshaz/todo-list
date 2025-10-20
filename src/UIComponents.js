@@ -66,7 +66,7 @@ export class UIComponents {
         const projectArray = store.getProjects();
 
 
-        projectArray.map((project) => {
+        projectArray.forEach((project) => {
             const myProjectDiv = document.createElement("div");
             myProjectDiv.className = "project-container";
             myProjectDiv.id = project.id;
@@ -98,9 +98,9 @@ export class UIComponents {
 
             const currentProject = event.target.parentElement;
 
-            const copyContents = event.target.parentElement.cloneNode(true);
+            const copyContents = currentProject.cloneNode(true);
             console.log(currentProject);
-            const currentProjectId = event.target.parentElement.id;
+            const currentProjectId = currentProject.id;
 
             const storedProjects = new StoreProject();
             console.log(storedProjects);
@@ -118,7 +118,7 @@ export class UIComponents {
                 console.log(projectTodo);
 
 
-                this.showTodo(projectTodo);
+                this.showTodo(projectTodo, currentProjectId);
 
 
             }else {
@@ -141,10 +141,10 @@ export class UIComponents {
         });
     }
 
-    static showTodo(todoArray) {
+    static showTodo(todoArray, projectId) {
         if (todoArray && todoArray.length > 0) {
             todoArray.forEach((todo) => {
-                this.createTodo(todo);
+                this.createTodo(todo, projectId);
             });
             
         }else {
@@ -153,25 +153,36 @@ export class UIComponents {
         
     }
 
-     static createTodo(todo) {
+     static createTodo(todo, projectID) {
+
+        console.log(projectID);
        
         const title = todo.title;
         const date = todo.date;
         //const notes = todo.notes;
 
         const tododiv = document.createElement("div");
+
+        tododiv.className = "todo-outer-container";
         const todoCheckListDiv = document.createElement("div");
+        todoCheckListDiv.className = "todo-container";
+
+        todoCheckListDiv.dataset.projectId = projectID;
+
+        const todoCheckListLabel = document.createElement("label");
+        todoCheckListLabel.className = "checkbox-label";
+        todoCheckListLabel.setAttribute("for", todo.id);
+        todoCheckListLabel.textContent = todo.title;
+
+
         const todoCheckList = document.createElement("input");
         todoCheckList.type = "checkbox";
+        todoCheckList.className = "todo-item";
         todoCheckList.name = "todo";
         todoCheckList.id = todo.id;
         todoCheckList.textContent = title;
 
 
-
-        const todoCheckListLabel = document.createElement("label");
-        todoCheckListLabel.setAttribute("for", todo.id);
-        todoCheckListLabel.textContent = todo.title;
 
         todoCheckListDiv.append(todoCheckList, todoCheckListLabel);
 
@@ -180,7 +191,72 @@ export class UIComponents {
 
         tododiv.append(todoCheckListDiv, dateDiv);
 
-        this.contentsContainer.appendChild(tododiv);        
+        this.contentsContainer.appendChild(tododiv); 
+
+        this.handleTodoChecklist(this.contentsContainer);
+        
+        return tododiv;
+
+    }
+
+    static handleTodoChecklist(container) {
+
+        //const contentsContainer = document.querySelector(".contents");
+    
+        container.addEventListener("change", (event) => {
+            if (event.target.type === "checkbox") { 
+                if (event.target.checked) {
+
+                    const finishedTodoCheckBoxDiv = event.target.parentElement;
+
+                    console.log(finishedTodoCheckBoxDiv);
+
+
+                    const projectDiv = finishedTodoCheckBoxDiv.closest(".project-container");
+                    console.log(projectDiv);
+
+                    const finishedTodoCheckBox = event.target;
+
+                    console.log(finishedTodoCheckBox);
+
+                    const finishedTodoCheckBoxID = finishedTodoCheckBox.id;
+
+                    console.log(finishedTodoCheckBoxID);
+
+                    const finishedTodoCheckboxCopy = finishedTodoCheckBoxDiv.cloneNode(true);
+
+                    //container.remove(finishedTodoCheckBoxDiv);
+
+                    
+                    const projectId = finishedTodoCheckBoxDiv.dataset.projectId;
+
+
+                    console.log(projectId);
+
+
+                    const store = new StoreProject();
+                    const storedProject = store.getProjectsByID(projectId);
+
+                    console.log(storedProject);
+
+                    const projectTodo = storedProject.getProjectTodoByID(finishedTodoCheckBoxID);
+
+                    console.log(projectTodo);
+
+                    projectTodo.markTodoComplete(event.target.checked);
+
+
+                    store.updateProject(storedProject);
+
+                    const completedTodosContainer = document.querySelector(".completed-todos");
+                    completedTodosContainer.appendChild(finishedTodoCheckboxCopy);
+
+                };
+                //const finishedTodo = event.target.value;
+               
+
+            };
+        });
 
     }
 

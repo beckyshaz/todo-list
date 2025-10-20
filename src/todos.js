@@ -11,6 +11,10 @@ export class Todos {
         this.completed = false;
         this.id = new Date() + Math.random();
     }
+
+    markTodoComplete(isCompleted){
+        this.completed = isCompleted;
+    }
 }
 
 export class TodosForm {

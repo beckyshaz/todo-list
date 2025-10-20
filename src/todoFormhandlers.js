@@ -30,8 +30,13 @@ export class TodoFormHandlers {
             const projectContents = document.querySelector(".contents");
 
             //projectContents.innerHTML = "";
+
+            const currentProjectContainerChildren = projectContents.children;
+            console.log(currentProjectContainerChildren);
+    
     
             const currentProjectContainer = projectContents.children[0];
+            console.log(currentProjectContainer);
     
             const currentProjectId = currentProjectContainer.id;
             console.log(currentProjectId);
@@ -48,8 +53,12 @@ export class TodoFormHandlers {
             storedProjects.updateProject(projectById);
     
             //this.createAddTodoButton(projectContents);
-    
-            UIComponents.createTodo(todo);
+            
+            const createdTodo = UIComponents.createTodo(todo, currentProjectId);
+
+            console.log(createdTodo);
+
+            console.log(createdTodo.id);
             this.resetTodoForm();
             this.hideTodoForm();
                 
@@ -79,6 +88,7 @@ export class TodoFormHandlers {
     
         handle() {
             this.toggleTodoForm();
+            this.resetTodoForm();
         }
     
 

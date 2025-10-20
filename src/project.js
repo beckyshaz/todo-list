@@ -6,6 +6,7 @@ import { StoreProject } from "./storeProject";
 import { ProjectFormHandlers } from "./projectFormHandlers";
 
 import { CreateForm } from "./createForm";
+import { Todos } from "./todos";
 
 export class Project {
     constructor (title, description=""){
@@ -22,6 +23,20 @@ export class Project {
 
     getProjectTodo() {
         return this.tasks;
+    }
+
+    getProjectTodoByID(todoID) {
+        const todosArray = this.getProjectTodo();      
+
+        const todos = todosArray.find((todo) => todo.id === todoID);
+
+        if (!todos) {
+            console.log("todo not found by that id");
+        }
+
+        return todos;
+
+        
     }
 }
 

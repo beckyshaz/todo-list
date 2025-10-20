@@ -1,4 +1,8 @@
+
+
 import { Project } from "./project";
+
+import { Todos  } from "./todos";
 
 export class StoreProject {
     
@@ -24,12 +28,27 @@ export class StoreProject {
             const projectInstance = new Project(projectData.title, projectData.description);
 
             projectInstance.id = projectData.id
-            projectInstance.tasks = projectData.tasks;
+            projectInstance.tasks = projectData.tasks.map((todo) => {
+                const todoInstance = new Todos(todo.title,  todo.dueDate, todo.priority, todo.notes);
+    
+                todoInstance.id = todo.id;
+                todoInstance.completed = todo.completed;
+                return todoInstance;
+            });
 
             return projectInstance;
 
         });
+
+
        
+    }
+
+
+    clearProjets() {
+        Storage.clear();
+
+        Storage.removeItem();
     }
 
     updateProject(updatedProject) {
@@ -54,6 +73,8 @@ export class StoreProject {
         const projectByID = storedProjects.find((p) => p.id === projectId);
         return projectByID;
     }
+
+    
     
     
 }

@@ -35,8 +35,27 @@ const myProjects = document.querySelector(".my-projects");
 myProjects.appendChild(projectAddBtn);
 
 
-const todoForm = new TodosForm();
-console.log(todoForm);
+/*const todoFormInstance = new TodosForm();
+
+if (todoFormInstance) {
+    console.log(todoFormInstance);
+    const todoForm = todoFormInstance.getTodoForm();
+
+    if (todoForm) {
+        const todoFormContainer = document.querySelector(".todo-form-div");
+        todoFormContainer.appendChild(todoForm);
+
+    }else {
+        console.log("Todo form not found");
+    }
+}else {
+    console.log("failed to create form instance");
+}
+
+*/
+
+
+
 //const project = new Project("Love", "love is a beautiful thing when founded"); 
 //console.log(project);
 

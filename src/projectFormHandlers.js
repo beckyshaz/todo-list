@@ -27,16 +27,19 @@ export class ProjectFormHandlers {
     
         const project = new Project(projectTitleInput.value, projectDescriptionInput.value);
         console.log(project);
+
+        const projectId = project.id;
         const storeProject = new StoreProject();
        
         const storedProjects = storeProject.getProjects();
         console.log(storedProjects);
 
-        const checkProject = storedProjects.find((p) => (p.title === project.title) && (p.description === project.description));
-        console.log(checkProject);
+        const checkProjectById = storeProject.getProjectsByID(projectId);
+        console.log(checkProjectById);
         
-        if (!checkProject) {
+        if (!checkProjectById) {
             storeProject.addProject(project);
+            console.log("project added succssefully");
             UIComponents.createProject(project);
             this.hideForm();
             
@@ -44,6 +47,8 @@ export class ProjectFormHandlers {
 
         else {
             //UIComponents.createProject();
+
+            console.log("project already exists");
             
             this.hideForm();
         }

@@ -13,7 +13,7 @@ export class Project {
 
         this.title = title;
         this.description = description;
-        this.id = new Date() + Math.random();
+        this.id = crypto.randomUUID();
         this.tasks = [];
     };
 

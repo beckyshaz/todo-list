@@ -16,7 +16,7 @@ import { ProjectForm } from "./project";
 
 import { TodosForm } from "./todos";
 
-
+import { StoreProject } from "./storeProject";
 
 const projectformInstance = new ProjectForm();
 
@@ -60,9 +60,16 @@ if (todoFormInstance) {
 //console.log(project);
 
 UIComponents.showProjects();
+//UIComponents.showTodo();
+
 
 UIComponents.monitorProjects();
 
+
+/*const store = new StoreProject();
+store.clearProjets();*/
+
+//console.log(store);
 
 
 

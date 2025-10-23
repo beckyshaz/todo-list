@@ -1,4 +1,5 @@
 
+import { id } from "date-fns/locale";
 import { StoreProject } from "./storeProject";
 import { TodosForm } from "./todos";
 //import { CreateForm } from "./createForm";
@@ -57,6 +58,15 @@ export class UIComponents {
         const addTodoBtn = this.createAddTodoButton();
         this.contentsContainer.appendChild(addTodoBtn);
 
+        /*const store = new StoreProject();
+        const currentProject = store.getProjectsByID(project.id);
+        console.log(currentProject);
+
+        const todo = currentProject.getProjectTodo();
+        console.log(todo)
+
+        this.showTodo(todo, currentProject);*/
+
     }
 
     static showProjects() {
@@ -70,6 +80,8 @@ export class UIComponents {
             const myProjectDiv = document.createElement("div");
             myProjectDiv.className = "project-container";
             myProjectDiv.id = project.id;
+
+            const todoArray = project.getProjectTodo();
             const titleH2 = document.createElement("h2");
             titleH2.textContent = project.title;
             const descriptionParag = document.createElement("p");
@@ -84,12 +96,14 @@ export class UIComponents {
             this.contentsContainer.appendChild(copyCreatedProject);
             const addTodoBtn = this.createAddTodoButton();
             this.contentsContainer.appendChild(addTodoBtn);
+            this.showTodo(todoArray, project.id);
         })
         
     }
 
     static monitorProjects() {
-        const myProjects = document.querySelector(".project-list");
+        const myProjects = 
+        document.querySelector(".project-list");
         this.contentsContainer = document.querySelector(".contents");
     
         myProjects.addEventListener("click", (event) => {
@@ -98,7 +112,6 @@ export class UIComponents {
 
             const currentProject = event.target.parentElement;
 
-            const copyContents = currentProject.cloneNode(true);
             console.log(currentProject);
             const currentProjectId = currentProject.id;
 
@@ -110,7 +123,18 @@ export class UIComponents {
 
         
             if (projectByID) {
-                this.contentsContainer.appendChild(copyContents);
+                const newProjectContainer = document.createElement("div");
+                newProjectContainer.className = "project-container";
+                newProjectContainer.dataset.projectId = projectByID.id;
+                
+                const titleH2 = document.createElement("h2");
+                titleH2.textContent = projectByID.title;
+                
+                const descriptionParag = document.createElement("p");
+                descriptionParag.textContent = projectByID.description;
+    
+                newProjectContainer.append(titleH2, descriptionParag);
+                this.contentsContainer.appendChild(newProjectContainer);
                 const addBtn = this.createAddTodoButton();
                 this.contentsContainer.appendChild(addBtn);
 
@@ -143,8 +167,13 @@ export class UIComponents {
 
     static showTodo(todoArray, projectId) {
         if (todoArray && todoArray.length > 0) {
-            todoArray.forEach((todo) => {
-                this.createTodo(todo, projectId);
+            todoArray.forEach((todo) => { 
+                if (todo.completed === false) {
+                    this.createTodo(todo, projectId);
+                }else {
+                    this.showFinishedTodo(todo, projectId);
+                }
+                
             });
             
         }else {
@@ -181,6 +210,7 @@ export class UIComponents {
         todoCheckList.name = "todo";
         todoCheckList.id = todo.id;
         todoCheckList.textContent = title;
+        todoCheckList.setAttribute("dataset", todo.id);
 
 
 
@@ -199,6 +229,47 @@ export class UIComponents {
 
     }
 
+    static showFinishedTodo(todo, projectId) {
+        
+        const finishedTodoContainer = document.createElement("div");
+        finishedTodoContainer.dataset.projectId = projectId;
+        finishedTodoContainer.dataset.todoId = todo.id;
+        const todoCheckListLabel = document.createElement("label");
+        todoCheckListLabel.className = "complete-todo-label";
+        todoCheckListLabel.setAttribute("for", todo.id);
+        todoCheckListLabel.textContent = todo.title;
+                
+                
+        const todoCheckList = document.createElement("input");
+        todoCheckList.type = "checkbox";
+        todoCheckList.className = "todo-item";
+        todoCheckList.name = "todo";
+        todoCheckList.id = todo.id;
+        todoCheckList.checked = true;
+                        
+        todoCheckList.dataset.todoId = todo.id;
+
+        finishedTodoContainer.append(todoCheckList, todoCheckListLabel);
+
+        const completedTodosContainer = document.querySelector(".completed-todos");
+        console.log(completedTodosContainer);
+        if (completedTodosContainer) {
+            const existingTodo = completedTodosContainer.querySelector(`[data-todo-id="${todo.id}"]`);
+
+            console.log(existingTodo);
+
+            if (!existingTodo) {
+                completedTodosContainer.appendChild(finishedTodoContainer);
+            }else {
+                console.log("todo already exits");
+            }
+        }else{
+            console.log("completed todos container not found");
+        }
+        
+    
+    }
+
     static handleTodoChecklist(container) {
 
         //const contentsContainer = document.querySelector(".contents");
@@ -212,9 +283,6 @@ export class UIComponents {
                     console.log(finishedTodoCheckBoxDiv);
 
 
-                    const projectDiv = finishedTodoCheckBoxDiv.closest(".project-container");
-                    console.log(projectDiv);
-
                     const finishedTodoCheckBox = event.target;
 
                     console.log(finishedTodoCheckBox);
@@ -223,16 +291,15 @@ export class UIComponents {
 
                     console.log(finishedTodoCheckBoxID);
 
-                    const finishedTodoCheckboxCopy = finishedTodoCheckBoxDiv.cloneNode(true);
+                    const todoOuterContainerDiv = finishedTodoCheckBoxDiv.closest(".todo-outer-container");
 
-                    //container.remove(finishedTodoCheckBoxDiv);
+                    todoOuterContainerDiv.remove();
 
                     
                     const projectId = finishedTodoCheckBoxDiv.dataset.projectId;
-
+                
 
                     console.log(projectId);
-
 
                     const store = new StoreProject();
                     const storedProject = store.getProjectsByID(projectId);
@@ -248,8 +315,8 @@ export class UIComponents {
 
                     store.updateProject(storedProject);
 
-                    const completedTodosContainer = document.querySelector(".completed-todos");
-                    completedTodosContainer.appendChild(finishedTodoCheckboxCopy);
+                    
+                    this.showFinishedTodo(projectTodo, projectId);
 
                 };
                 //const finishedTodo = event.target.value;

@@ -4,6 +4,8 @@ import { Project } from "./project";
 
 import { Todos  } from "./todos";
 
+import { UIComponents } from "./UIComponents";
+
 export class StoreProject {
     
     constructor() {
@@ -46,9 +48,11 @@ export class StoreProject {
 
 
     clearProjets() {
-        Storage.clear();
+        localStorage.clear();
 
-        Storage.removeItem();
+       // Storage.removeItem();
+
+       UIComponents.showProjects();
     }
 
     updateProject(updatedProject) {

@@ -9,6 +9,7 @@ export class TodoFormHandlers {
     constructor(form) {
         this.form = form;
         this.bindTodoEvents();
+        this.currentProjectId = null;
     }
 
     bindTodoEvents() {
@@ -22,27 +23,42 @@ export class TodoFormHandlers {
     
         handleSubmitTodo(e) {
             e.preventDefault();
+
+            if (!this.currentProjectId) {
+                console.log("id not found");
+            }
             const titleTodoInput = this.form.querySelector("#todo-title");
             const dateInput = this.form.querySelector("#date");
             const todoNotes = this.form.querySelector("#notes");
+            const todoPriorityDiv = this.form.querySelector(".priority");
+            console.log(todoPriorityDiv);
+
+
 
             const todo  = new Todos(titleTodoInput.value, dateInput.value, todoNotes.value);
-            const projectContents = document.querySelector(".contents");
+            //const projectContents = document.querySelector(".contents");
+            
 
-            //projectContents.innerHTML = "";
+            const todoPriority = this.getPriority(this.form, todo);
 
-            const currentProjectContainerChildren = projectContents.children;
-            console.log(currentProjectContainerChildren);
+            console.log(todoPriority);
+
+            //todo.setPriority(todoPriority);
+
+            //projectContents.innerHTML = "";       
+
+           // const currentProjectContainerChildren = projectContents.children;
+            //console.log(currentProjectContainerChildren);
     
     
-            const currentProjectContainer = projectContents.children[0];
-            console.log(currentProjectContainer);
+           // const currentProjectContainer = projectContents.children[0];
+           // console.log(currentProjectContainer);
     
-            const currentProjectId = currentProjectContainer.id;
-            console.log(currentProjectId);
+            const currentId = this.currentProjectId;
+            console.log(currentId);
     
             const storedProjects = new StoreProject();
-            const projectById = storedProjects.getProjectsByID(currentProjectId);
+            const projectById = storedProjects.getProjectsByID(currentId);
             console.log(projectById);
             
     
@@ -54,7 +70,7 @@ export class TodoFormHandlers {
     
             //this.createAddTodoButton(projectContents);
             
-            const createdTodo = UIComponents.createTodo(todo, currentProjectId);
+            const createdTodo = UIComponents.createTodo(todo, currentId);
 
             console.log(createdTodo);
 
@@ -62,6 +78,10 @@ export class TodoFormHandlers {
             this.resetTodoForm();
             this.hideTodoForm();
                 
+        }
+
+        setCurrentProjectId(projectId) {
+            this.currentProjectId = projectId;
         }
     
     
@@ -89,6 +109,21 @@ export class TodoFormHandlers {
         handle() {
             this.toggleTodoForm();
             this.resetTodoForm();
+        }
+
+        getPriority(form, todo) {
+
+            const checkedPriority = form.querySelector(`input[data-priority]:checked`);
+
+            if (checkedPriority) {
+                const priorityText = checkedPriority.dataset.priority;
+
+                todo.setPriority(priorityText);
+                return priorityText;
+            }else {
+                return null;
+            }
+
         }
     
 

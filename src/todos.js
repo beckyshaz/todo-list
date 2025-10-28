@@ -15,10 +15,16 @@ export class Todos {
     markTodoComplete(isCompleted){
         this.completed = isCompleted;
     }
+
+    setPriority(priority) {
+        this.priority = priority;
+    }
 }
 
 export class TodosForm {
     constructor() {
+        //this.form = null;
+
         this.form = CreateForm.createTodoForm();
         this.handler = new TodoFormHandlers(this.form);
     }

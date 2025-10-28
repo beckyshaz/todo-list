@@ -38,9 +38,10 @@ export class CreateForm {
         this.priority1.type = "checkbox";
         this.priority1.name = "priority1";
         this.priority1.id = "priority1";
+        this.priority1.dataset.priority = "Very High";
     
         this.priority1label = document.createElement("label");
-        this.priority1label.textContent = "very High";
+        this.priority1label.textContent = "Very High";
         this.priority1label.setAttribute("for", "priority1");
     
         this.priority1Div = document.createElement("div");
@@ -52,6 +53,8 @@ export class CreateForm {
         this.priority2.type = "checkbox";
         this.priority2.name = "priority2";
         this.priority2.id = "priority2";
+        this.priority2.dataset.priority = "High";
+    
     
         this.priority2label = document.createElement("label");
         this.priority2label.textContent = "High";
@@ -66,6 +69,8 @@ export class CreateForm {
         this.priority3.type = "checkbox";
         this.priority3.name = "priority3";
         this.priority3.id = "priority3";
+        this.priority3.dataset.priority = "Medium";
+    
     
         this.priority3label = document.createElement("label");
         this.priority3label.textContent = "Medium";
@@ -80,6 +85,8 @@ export class CreateForm {
         this.priority4.type = "checkbox";
         this.priority4.name = "priority4";
         this.priority4.id = "priority4";
+        this.priority4.dataset.priority = "Low";
+    
     
         this.priority4label = document.createElement("label");
         this.priority4label.textContent = "Low";
@@ -91,6 +98,7 @@ export class CreateForm {
         this.priority4Div.append(this.priority4, this.priority4label);
 
         this.prioritiesDiv = document.createElement("div");
+        this.prioritiesDiv.className = "priority";
         this.prioritiesDiv.textContent = "Priorities";
     
             

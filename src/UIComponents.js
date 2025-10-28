@@ -4,31 +4,108 @@ import { StoreProject } from "./storeProject";
 import { TodosForm } from "./todos";
 //import { CreateForm } from "./createForm";
 
+
+
 export class UIComponents {
+
+    static todoFormHandler = null;
+    static todoForm = null;
+    static contentsContainer = document.querySelector(".contents");
+    
     
     static createAddButton(handler) {
-        this.addButton = document.createElement("button");
-        this.addButton.className = "add-project";
-        this.addButton.textContent = "Add Project";
+        const addButton = document.createElement("button");
+        addButton.className = "add-project";
+        addButton.textContent = "Add Project";
  
         if (handler && typeof handler.handle === "function") {
-             this.addButton.addEventListener("click", (e) => handler.handle(e));
+             addButton.addEventListener("click", (e) => handler.handle(e));
         }
  
         else if (handler && typeof handler === "function") {
-             this.addButton.addEventListener("click", () =>  handler());
+             addButton.addEventListener("click", () =>  handler());
         }
-        return this.addButton;
+        return addButton;
      };
 
-    static createAddTodoButton() {
-        const todoFormObject = new TodosForm();
-        const handler = todoFormObject.getTodoFormHandlers();
-        
+    static createTodoForm() {
 
-        const todoform = todoFormObject.getTodoForm();
+        //const todoForm = null;
+        //const todoFormHandler = null;
+
+        //const exinstingForm = document.querySelector(".todo-form");
+
+       // if (exinstingForm) {
+          //  return [exinstingForm]
+       // }
+
+        const formAndHandlerArray = [];
+        const todoFormObject = new TodosForm();
+        if(todoFormObject) {
+            const handler = todoFormObject.getTodoFormHandlers();
+
+            const todoform = todoFormObject.getTodoForm();
+            formAndHandlerArray.push(handler);
+            formAndHandlerArray.push(todoform);
+        }
+        return formAndHandlerArray;
+        
+        
+    }
+   
+    
+    static createAddTodoButton(projectId) {
+        
+        if (!this.todoForm) {
+            const formHandlerArray = this.createTodoForm();
+            this.todoFormHandler = formHandlerArray[0];
+            this.todoForm = formHandlerArray[1];
+
+
+          /*  if (this.todoFormHandler.setCurrentProjectId) {
+                this.todoFormHandler.setCurrentProjectId(projectId);
+            }
+            */
+            const todoFormContainer = document.querySelector(".todo-form-div");
+            todoFormContainer.appendChild(this.todoForm);
+        }
+        
+        // Update handler with current project context
+        if (this.todoFormHandler.setCurrentProjectId) {
+            this.todoFormHandler.setCurrentProjectId(projectId);
+        }
+        
+        const addTodoBtn = this.createAddButton(this.todoFormHandler);
+        addTodoBtn.textContent = "Add tasks";
+        addTodoBtn.className = "add-todoBtn";
+        
+        return addTodoBtn;
+    }
+
+
+    /*static createAddTodoButton() {
+
+        const ex
+        const formHandlerArray = this.createTodoForm();
+        const handler = formHandlerArray[0];
+        console.log(handler);
+        const todoForm = formHandlerArray[1];
+        console.log(todoForm);
+        
         const todoFormContainer = document.querySelector(".todo-form-div");
-        todoFormContainer.appendChild(todoform);
+
+        if (todoFormContainer) {
+           const existingForm = todoFormContainer.querySelector(".todo-form");
+           if (existingForm) {
+            existingForm.style.display = existingForm.style.display === "block" ? "none" : "block";
+           }else {
+            console.log("todo form not found");
+           }
+            
+        }
+        todoFormContainer.appendChild(todoForm)
+
+
         const addTodoBtn = this.createAddButton(handler);
         addTodoBtn.textContent = "Add tasks";
         addTodoBtn.className = "add-todoBtn";
@@ -37,6 +114,7 @@ export class UIComponents {
         return addTodoBtn;
     }
 
+*/
 
     static createProject(project) {
 
@@ -52,13 +130,13 @@ export class UIComponents {
         const copyCreatedProject = myProjectDiv.cloneNode(true);
         myProjects.appendChild(myProjectDiv);
             
-        this.contentsContainer = document.querySelector(".contents");
+        
         this.contentsContainer.innerHTML = "";
         this.contentsContainer.appendChild(copyCreatedProject);
-        const addTodoBtn = this.createAddTodoButton();
+        const addTodoBtn = this.createAddTodoButton(project.id);
         this.contentsContainer.appendChild(addTodoBtn);
 
-        /*const store = new StoreProject();
+       /* const store = new StoreProject();
         const currentProject = store.getProjectsByID(project.id);
         console.log(currentProject);
 
@@ -81,32 +159,33 @@ export class UIComponents {
             myProjectDiv.className = "project-container";
             myProjectDiv.id = project.id;
 
-            const todoArray = project.getProjectTodo();
+           // const todoArray = project.getProjectTodo();
             const titleH2 = document.createElement("h2");
             titleH2.textContent = project.title;
             const descriptionParag = document.createElement("p");
             descriptionParag.textContent = project.description;
             const myProjects = document.querySelector(".project-list");
             myProjectDiv.append(titleH2, descriptionParag);
-            const copyCreatedProject = myProjectDiv.cloneNode(true);
+            //const copyCreatedProject = myProjectDiv.cloneNode(true);
             myProjects.appendChild(myProjectDiv);
             
-            this.contentsContainer = document.querySelector(".contents");
-            this.contentsContainer.innerHTML = "";
-            this.contentsContainer.appendChild(copyCreatedProject);
-            const addTodoBtn = this.createAddTodoButton();
-            this.contentsContainer.appendChild(addTodoBtn);
-            this.showTodo(todoArray, project.id);
+          //  this.contentsContainer = document.querySelector(".contents");
+          //  this.contentsContainer.innerHTML = "";
+           // this.contentsContainer.appendChild(copyCreatedProject);
+          //  const addTodoBtn = this.createAddTodoButton(project.id);
+          //  this.contentsContainer.appendChild(addTodoBtn);
+           // this.showTodo(todoArray, project.id);
+           this.monitorProjects(myProjects);
         })
         
     }
 
-    static monitorProjects() {
-        const myProjects = 
-        document.querySelector(".project-list");
+    static monitorProjects(projectListContainer) {
+        //const myProjects = 
+        //document.querySelector(".project-list");
         this.contentsContainer = document.querySelector(".contents");
     
-        myProjects.addEventListener("click", (event) => {
+        projectListContainer.addEventListener("click", (event) => {
             //const project = new Project(projectTitle, projectDescription);
             this.contentsContainer.innerHTML = "";
 
@@ -135,7 +214,7 @@ export class UIComponents {
     
                 newProjectContainer.append(titleH2, descriptionParag);
                 this.contentsContainer.appendChild(newProjectContainer);
-                const addBtn = this.createAddTodoButton();
+                const addBtn = this.createAddTodoButton(currentProjectId);
                 this.contentsContainer.appendChild(addBtn);
 
                 const projectTodo = projectByID.getProjectTodo();
@@ -182,13 +261,35 @@ export class UIComponents {
         
     }
 
+    static ApplyColorByPriority(priority, titleLabel) {
+        if (priority === "Very High") {
+            titleLabel.style.color = "red";
+        }else if (priority === "High") {
+            titleLabel.style.color = "green";
+        }else if (priority === "Medium") {
+            titleLabel.style.color = "purple";
+        }else if (priority === "Low") {
+            titleLabel.style.color ="yellow";
+        }else {
+            titleLabel.style.color = "black";
+        }
+    }
+
      static createTodo(todo, projectID) {
 
         console.log(projectID);
        
         const title = todo.title;
-        const date = todo.date;
+
+        console.log(title);
+        const date = todo.dueDate;
+        const priority = todo.priority;
+
+        console.log(priority);
         //const notes = todo.notes;
+        
+
+        console.log(date);
 
         const tododiv = document.createElement("div");
 
@@ -201,15 +302,15 @@ export class UIComponents {
         const todoCheckListLabel = document.createElement("label");
         todoCheckListLabel.className = "checkbox-label";
         todoCheckListLabel.setAttribute("for", todo.id);
-        todoCheckListLabel.textContent = todo.title;
-
+        todoCheckListLabel.textContent = title;
+        this.ApplyColorByPriority(priority, todoCheckListLabel);
 
         const todoCheckList = document.createElement("input");
         todoCheckList.type = "checkbox";
         todoCheckList.className = "todo-item";
         todoCheckList.name = "todo";
         todoCheckList.id = todo.id;
-        todoCheckList.textContent = title;
+        todoCheckList.textContent = todo.title;
         todoCheckList.setAttribute("dataset", todo.id);
 
 
@@ -217,6 +318,7 @@ export class UIComponents {
         todoCheckListDiv.append(todoCheckList, todoCheckListLabel);
 
         const dateDiv = document.createElement("div");
+
         dateDiv.textContent = date;
 
         tododiv.append(todoCheckListDiv, dateDiv);

@@ -10,6 +10,7 @@ import "./styles.css";
 
 //import { TodosForm } from "./project";
 
+
 import { UIComponents } from "./UIComponents";
 
 import { ProjectForm } from "./project";
@@ -35,24 +36,8 @@ const myProjects = document.querySelector(".my-projects");
 myProjects.appendChild(projectAddBtn);
 
 
-/*const todoFormInstance = new TodosForm();
 
-if (todoFormInstance) {
-    console.log(todoFormInstance);
-    const todoForm = todoFormInstance.getTodoForm();
-
-    if (todoForm) {
-        const todoFormContainer = document.querySelector(".todo-form-div");
-        todoFormContainer.appendChild(todoForm);
-
-    }else {
-        console.log("Todo form not found");
-    }
-}else {
-    console.log("failed to create form instance");
-}
-
-*/
+//const todoFormArray = UIComponents.createTodoForm()
 
 
 
@@ -63,11 +48,11 @@ UIComponents.showProjects();
 //UIComponents.showTodo();
 
 
-UIComponents.monitorProjects();
+//UIComponents.monitorProjects();
 
 
-/*const store = new StoreProject();
-store.clearProjets();*/
+//const store = new StoreProject();
+//store.clearProjets();
 
 //console.log(store);
 

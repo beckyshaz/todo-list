@@ -25,6 +25,17 @@ export class Project {
         return this.tasks;
     }
 
+    deleteProjectTodo(todoId) {
+        const todoArray = this.getProjectTodo();
+
+        const todoIndex = todoArray.findIndex((todo) => todo.id === todoId) 
+        if (todoIndex !== -1) {
+            todoArray.splice(todoIndex, 1);
+        }
+        return todoArray;
+
+    }
+
     getProjectTodoByID(todoID) {
         const todosArray = this.getProjectTodo();      
 

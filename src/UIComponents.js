@@ -299,23 +299,67 @@ export class UIComponents {
 
         todoCheckListDiv.dataset.projectId = projectID;
 
-        const todoCheckListLabel = document.createElement("label");
-        todoCheckListLabel.className = "checkbox-label";
-        todoCheckListLabel.setAttribute("for", todo.id);
-        todoCheckListLabel.textContent = title;
-        this.ApplyColorByPriority(priority, todoCheckListLabel);
-
         const todoCheckList = document.createElement("input");
         todoCheckList.type = "checkbox";
         todoCheckList.className = "todo-item";
         todoCheckList.name = "todo";
         todoCheckList.id = todo.id;
         todoCheckList.textContent = todo.title;
-        todoCheckList.setAttribute("dataset", todo.id);
+        todoCheckList.dataset.todoId = todo.id;
 
 
+        const todoCheckListLabel = document.createElement("label");
+        todoCheckListLabel.className = "checkbox-label";
+        todoCheckListLabel.setAttribute("for", todo.id);
+        todoCheckListLabel.textContent = title;
+        this.ApplyColorByPriority(priority, todoCheckListLabel);
 
-        todoCheckListDiv.append(todoCheckList, todoCheckListLabel);
+        
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-todo";
+        deleteButton.dataset.todoId = todo.id;
+        deleteButton.textContent = "delete";
+
+        const editButton = document.createElement("button");
+        editButton.className = "edit-todo";
+        editButton.textContent = "Edit";
+        editButton.dataset.todoId = todo.id;
+
+        const buttonsOuterDiv = document.createElement("div");
+        buttonsOuterDiv.append(deleteButton, editButton)
+        
+        
+
+        todoCheckListDiv.append(todoCheckList, todoCheckListLabel, buttonsOuterDiv);
+
+        deleteButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            if (event.currentTarget) {
+                const todoID = event.currentTarget.dataset.todoId;
+                const store = new StoreProject();
+                
+                const currentProject = store.getProjectsByID(projectID);
+                
+                
+                const todoArray = currentProject.deleteProjectTodo(todoID);
+                store.updateProject(currentProject);
+                this.contentsContainer.innerHTML = "";
+                this.showTodo(todoArray, projectID);
+
+            }
+            
+        });
+
+        editButton.addEventListener("click", (event) => {
+            if (event.currentTarget) {
+                this.todoForm.style.display = "block";
+                const todoTitle = this.todoForm.querySelector("#todo-title");
+                todoTitle.value = todoCheckListLabel.textContent;
+
+            }
+        })
+
+
 
         const dateDiv = document.createElement("div");
 

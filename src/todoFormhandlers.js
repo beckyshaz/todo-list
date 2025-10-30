@@ -24,9 +24,53 @@ export class TodoFormHandlers {
         handleSubmitTodo(e) {
             e.preventDefault();
 
+            if(this.form.dataset.editMode === "true") {
+                const editedTitleTodoInput = this.form.querySelector("#todo-title");
+                const editedDateInput = this.form.querySelector("#date");
+                const editedTodoNotes = this.form.querySelector("#notes");
+                const editedTodoPriorityDiv = this.form.querySelector(".priority");
+                console.log(editedTodoPriorityDiv);
+                const editedTodo = new Todos(editedTitleTodoInput.value, editedDateInput.value, editedTodoNotes.value);
+                const oldTodoId = this.form.dataset.editedTodoId;
+                console.log(oldTodoId);
+                const editedProjectId = this.currentProjectId;
+                console.log(editedProjectId);
+
+                //const editedId = this.currentProjectId;
+                //console.log(currentId);
+        
+                const store = new StoreProject();
+                const editedProjectById = store.getProjectsByID(editedProjectId);
+                console.log(editedProjectById);
+                
+        
+            
+        
+                editedProjectById.editProjectTodo(oldTodoId, editedTodo);
+    
+                store.updateProject(editedProjectById);
+
+                const editedTodoArray = editedProjectById.getProjectTodoByID(editedTodo.id);
+                const projectContents = document.querySelector(".contents");
+
+                projectContents.innerHTML = "";
+                UIComponents.showTodo(editedTodoArray, editedProjectId);
+
+                this.form.dataset.editMode = "false";
+                delete this.form.dataset.editedTodoId;
+                this.resetTodoForm();
+                this.hideTodoForm();
+                return;
+
+        
+                
+            }
+
             if (!this.currentProjectId) {
                 console.log("id not found");
             }
+
+            
             const titleTodoInput = this.form.querySelector("#todo-title");
             const dateInput = this.form.querySelector("#date");
             const todoNotes = this.form.querySelector("#notes");

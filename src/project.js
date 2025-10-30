@@ -34,6 +34,16 @@ export class Project {
         }
         return todoArray;
 
+    } 
+
+    editProjectTodo(todoId, currentTodo) {
+        const tasksArray = this.getProjectTodo();
+
+        const indexOfTodo = tasksArray.findIndex((todo) => todo.id === todoId);
+
+        if (indexOfTodo !== -1) {
+            tasksArray.splice(indexOfTodo, 1, currentTodo);
+        }
     }
 
     getProjectTodoByID(todoID) {

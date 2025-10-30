@@ -323,7 +323,10 @@ export class UIComponents {
         const editButton = document.createElement("button");
         editButton.className = "edit-todo";
         editButton.textContent = "Edit";
-        editButton.dataset.todoId = todo.id;
+        editButton.dataset.editedTodoId = todo.id;
+        editButton.dataset.editedProjectId = projectID;
+        
+
 
         const buttonsOuterDiv = document.createElement("div");
         buttonsOuterDiv.append(deleteButton, editButton)
@@ -352,9 +355,18 @@ export class UIComponents {
 
         editButton.addEventListener("click", (event) => {
             if (event.currentTarget) {
+                event.stopPropagation();
+
+                //const todoId = event.currentTarget.dataset.todoId;
+                
                 this.todoForm.style.display = "block";
+                this.todoForm.dataset.editMode = "true";
+                this.todoForm.dataset.editedTodoId = todo.id;
                 const todoTitle = this.todoForm.querySelector("#todo-title");
                 todoTitle.value = todoCheckListLabel.textContent;
+                console.log(todoTitle.value);
+
+                //const currentTodo = this.todoForm.
 
             }
         })

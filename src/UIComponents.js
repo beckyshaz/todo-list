@@ -261,7 +261,7 @@ export class UIComponents {
         
     }
 
-    static ApplyColorByPriority(priority, titleLabel) {
+    static applyColorByPriority(priority, titleLabel) {
         if (priority === "Very High") {
             titleLabel.style.color = "red";
         }else if (priority === "High") {
@@ -311,8 +311,9 @@ export class UIComponents {
         const todoCheckListLabel = document.createElement("label");
         todoCheckListLabel.className = "checkbox-label";
         todoCheckListLabel.setAttribute("for", todo.id);
+        todoCheckListLabel.dataset.todoId = todo.id;
         todoCheckListLabel.textContent = title;
-        this.ApplyColorByPriority(priority, todoCheckListLabel);
+        this.applyColorByPriority(priority, todoCheckListLabel);
 
         
         const deleteButton = document.createElement("button");
@@ -374,8 +375,9 @@ export class UIComponents {
 
 
         const dateDiv = document.createElement("div");
-
         dateDiv.textContent = date;
+        dateDiv.dataset.todoId = todo.id;
+        dateDiv.className = "todo-duedate";
 
         tododiv.append(todoCheckListDiv, dateDiv);
 

@@ -3,6 +3,25 @@
     margin: 0;
 }
 
+body {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr;
+}
+
+.dashboard {
+    background-color: aqua;
+    grid-column: 1 / 2;
+    grid-row: 2;
+}
+
+.contents {
+    background-color: aquamarine;
+    grid-column: 2;
+    grid-row: 2;
+    margin: 0 auto;
+    width: 100%;
+}
+
 .project-form {
     max-width: 50ch;
     border: 5px solid red;

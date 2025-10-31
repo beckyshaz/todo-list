@@ -36,9 +36,18 @@ export class TodoFormHandlers {
                 const editedProjectId = this.currentProjectId;
                 console.log(editedProjectId);
 
-                //const editedId = this.currentProjectId;
-                //console.log(currentId);
-        
+                const projectContents = document.querySelector(".contents");
+
+            
+                const editedTodoLabel = projectContents.querySelector(`.checkbox-label[data-todo-id="${oldTodoId}"]`);
+                const editedPriority = this.getPriority(this.form, editedTodo);
+                console.log(editedTodoLabel);
+                editedTodoLabel.textContent = editedTitleTodoInput.value;
+                UIComponents.applyColorByPriority(editedPriority, editedTodoLabel)
+
+                const editedDate = projectContents.querySelector(`.todo-duedate[data-todo-id="${oldTodoId}"]`);
+                editedDate.textContent = editedDateInput.value;
+
                 const store = new StoreProject();
                 const editedProjectById = store.getProjectsByID(editedProjectId);
                 console.log(editedProjectById);
@@ -50,11 +59,10 @@ export class TodoFormHandlers {
     
                 store.updateProject(editedProjectById);
 
-                const editedTodoArray = editedProjectById.getProjectTodoByID(editedTodo.id);
-                const projectContents = document.querySelector(".contents");
+            
 
-                projectContents.innerHTML = "";
-                UIComponents.showTodo(editedTodoArray, editedProjectId);
+                //projectContents.innerHTML = "";
+               // UIComponents.showTodo(editedTodoArray, editedProjectId);
 
                 this.form.dataset.editMode = "false";
                 delete this.form.dataset.editedTodoId;

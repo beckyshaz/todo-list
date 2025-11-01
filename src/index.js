@@ -36,7 +36,6 @@ const myProjects = document.querySelector(".my-projects");
 myProjects.appendChild(projectAddBtn);
 
 
-
 //const todoFormArray = UIComponents.createTodoForm()
 
 
@@ -55,7 +54,7 @@ UIComponents.showProjects();
 //store.clearProjets();
 
 //console.log(store);
-
+UIComponents.addListenerToCompletedBtn();
 
 
 

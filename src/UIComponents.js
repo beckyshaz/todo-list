@@ -2,6 +2,7 @@
 import { id } from "date-fns/locale";
 import { StoreProject } from "./storeProject";
 import { TodosForm } from "./todos";
+import { compareAsc } from "date-fns";
 //import { CreateForm } from "./createForm";
 
 
@@ -184,9 +185,11 @@ export class UIComponents {
         //const myProjects = 
         //document.querySelector(".project-list");
         this.contentsContainer = document.querySelector(".contents");
-    
+        
         projectListContainer.addEventListener("click", (event) => {
             //const project = new Project(projectTitle, projectDescription);
+            this.contentsContainer.style.display = "block";
+    
             this.contentsContainer.innerHTML = "";
 
             const currentProject = event.target.parentElement;
@@ -249,9 +252,9 @@ export class UIComponents {
             todoArray.forEach((todo) => { 
                 if (todo.completed === false) {
                     this.createTodo(todo, projectId);
-                }else {
+                }/*else {
                     this.showFinishedTodo(todo, projectId);
-                }
+                }*/
                 
             });
             
@@ -389,45 +392,91 @@ export class UIComponents {
 
     }
 
-    static showFinishedTodo(todo, projectId) {
-        
-        const finishedTodoContainer = document.createElement("div");
-        finishedTodoContainer.dataset.projectId = projectId;
-        finishedTodoContainer.dataset.todoId = todo.id;
-        const todoCheckListLabel = document.createElement("label");
-        todoCheckListLabel.className = "complete-todo-label";
-        todoCheckListLabel.setAttribute("for", todo.id);
-        todoCheckListLabel.textContent = todo.title;
-                
-                
-        const todoCheckList = document.createElement("input");
-        todoCheckList.type = "checkbox";
-        todoCheckList.className = "todo-item";
-        todoCheckList.name = "todo";
-        todoCheckList.id = todo.id;
-        todoCheckList.checked = true;
-                        
-        todoCheckList.dataset.todoId = todo.id;
+    static showFinishedTodo() {
 
-        finishedTodoContainer.append(todoCheckList, todoCheckListLabel);
-
-        const completedTodosContainer = document.querySelector(".completed-todos");
-        console.log(completedTodosContainer);
-        if (completedTodosContainer) {
-            const existingTodo = completedTodosContainer.querySelector(`[data-todo-id="${todo.id}"]`);
-
-            console.log(existingTodo);
-
-            if (!existingTodo) {
-                completedTodosContainer.appendChild(finishedTodoContainer);
-            }else {
-                console.log("todo already exits");
+        const store = new StoreProject();
+        const projects = store.getProjects();
+        const projectsInforArray = projects.map((project) => { 
+           const todosArray = project.getProjectTodo();
+            //console.log(todosArray);
+            const projectId = project.id;
+            const projectTitle = project.title;
+            //console.log(projectTitle);
+            return {
+                todosArray,
+                projectId,
+                projectTitle
             }
-        }else{
-            console.log("completed todos container not found");
-        }
-        
+
     
+        })
+
+        if (projectsInforArray && projectsInforArray.length > 0) {
+            projectsInforArray.forEach((projectInfo) => {
+                const todoArray = projectInfo.todosArray;
+                if (todoArray && todoArray.length > 0) {
+                    todoArray.forEach((todo) => {
+                        if (todo.completed === "true" || todo.completed === true) {
+                            const finishedTodoContainer = document.createElement("div");
+                            const finishedTodoProjectTitle = document.createElement("h1");
+                            finishedTodoProjectTitle.textContent = projectInfo.projectTitle;
+                            finishedTodoContainer.dataset.projectId = projectInfo.projectId;
+                            finishedTodoContainer.dataset.todoId = todo.id;
+                            const todoCheckListLabel = document.createElement("label");
+                            todoCheckListLabel.className = "complete-todo-label";
+                            todoCheckListLabel.setAttribute("for", todo.id);
+                            todoCheckListLabel.textContent = todo.title;
+                                    
+                        
+                            const todoCheckList = document.createElement("input");
+                            todoCheckList.type = "checkbox";
+                            todoCheckList.className = "todo-item";
+                            todoCheckList.name = "todo";
+                            todoCheckList.id = todo.id;
+                            todoCheckList.checked = true;
+                                            
+                            todoCheckList.dataset.todoId = todo.id;
+        
+                            finishedTodoContainer.append(finishedTodoProjectTitle, todoCheckList, todoCheckListLabel);
+        
+                            const completedTodosContainer = document.querySelector(".completed-todos");
+                            console.log(completedTodosContainer);
+                            if (completedTodosContainer) {
+                                const existingTodo = completedTodosContainer.querySelector(`[data-todo-id="${todo.id}"]`);
+        
+                                console.log(existingTodo);
+        
+                                if (!existingTodo) {
+                                    completedTodosContainer.appendChild(finishedTodoContainer);
+                                }else {
+                                    console.log("todo already exits");
+                                }
+                            }else{
+                                console.log("completed todos container not found");
+                    }
+                        }
+                    })
+                }
+            })
+            
+        
+        }
+
+
+        }
+            
+            
+    
+    static addListenerToCompletedBtn() {
+        const completedTodoBtn = document.querySelector(".completed");
+        completedTodoBtn.addEventListener('click', () => {
+            const completedTodosContainer = document.querySelector(".completed-todos");
+
+            this.contentsContainer.style.display = "none";
+            completedTodosContainer.style.display = "block";
+            this.showFinishedTodo();
+
+        });
     }
 
     static handleTodoChecklist(container) {
@@ -476,7 +525,7 @@ export class UIComponents {
                     store.updateProject(storedProject);
 
                     
-                    this.showFinishedTodo(projectTodo, projectId);
+                   // this.showFinishedTodo(projectTodo, projectId);
 
                 };
                 //const finishedTodo = event.target.value;

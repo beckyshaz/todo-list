@@ -12,14 +12,22 @@ body {
     background-color: aqua;
     grid-column: 1 / 2;
     grid-row: 2;
+    height: 100vh;
+    position: relative;
 }
 
 .contents {
     background-color: aquamarine;
     grid-column: 2;
     grid-row: 2;
-    margin: 0 auto;
-    width: 100%;
+    padding: 2rem;
+    position: relative;
+}
+
+.completed-todos {
+    display: none;
+    grid-column: 2;
+    grid-row: 2;
 }
 
 .project-form {
@@ -28,6 +36,18 @@ body {
     display: flex;
     flex-direction: column;
     padding: 2rem;
+    position: absolute;
+    top: 150px;
+    left: 250px;
+}
+
+.todo-form {
+    max-width: fit-content;
+    border: 5px solid red;
+    padding: 2rem;
+    position: absolute;
+    top: 100px;
+    right: 30px;
 }
 
 .project-form input {

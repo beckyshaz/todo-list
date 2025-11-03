@@ -14,27 +14,27 @@ body {
     text-align: center;
     padding-top: 2rem;
     grid-row: 1 / -1 ;
+    color: darkgoldenrod;
 }
 
 .dashboard {
     background-color: darkgreen;
     grid-column: 1 / 2;
     position: relative;
-    padding: 1rem 2rem;
+    padding: 3rem 2rem;
     grid-row: 1;
 }
 
-.completed-todos {
-    grid-column: 2;
-    grid-row: 1;
-    margin-top: 4rem;
-    display: none;
+.completed {
+    margin-bottom: 2em;
+    padding: 0.5em;
+    border-radius: 10px;
+    border: none;
+    background-color: yellowgreen;
+    font-size: 1em;
+    font-weight: bold;
 }
 
-.completed-todos div {
-    background-color: darkseagreen;
-    margin: 0.2rem 0.3rem;
-}
 
 .project-list {
     margin-top: 1rem;
@@ -49,6 +49,27 @@ body {
 
 .project-list .project-container p {
     color: yellow;
+}
+
+.add-project {
+    padding: 0.5em;
+    border-radius: 10px;
+    border: none;
+    background-color: yellowgreen;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.completed-todos {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 4rem;
+    display: none;
+}
+
+.completed-todos div {
+    background-color: darkseagreen;
+    margin: 0.2rem 0.3rem;
 }
 
 .contents .project-container{

@@ -185,9 +185,50 @@ export class UIComponents {
         //const myProjects = 
         //document.querySelector(".project-list");
         this.contentsContainer = document.querySelector(".contents");
+        this.contentsContainer.style.display = 'block';
+        const projectInList = projectListContainer.querySelector(".project-container");
+        console.log(projectInList);
+        const projectInListId = projectInList.id;
+        console.log(projectInListId);
+
+        const store = new StoreProject();
+        console.log(store);
+            
+        const projectById = store.getProjectsByID(projectInListId);
+        console.log(projectById);
+        
+        if (projectById) {
+            
+            const newProjectDiv = document.createElement("div");
+            newProjectDiv.className = "project-container";
+            newProjectDiv.dataset.projectId = projectById.id;
+                
+            const projectTitle = document.createElement("h2");
+            projectTitle.textContent = projectById.title;
+                
+            const projectDescription = document.createElement("p");
+            projectDescription.textContent = projectById.description;
+    
+            newProjectDiv.append(projectTitle, projectDescription);
+            this.contentsContainer.appendChild(newProjectDiv);
+            const addBtn = this.createAddTodoButton(projectInListId);
+            this.contentsContainer.appendChild(addBtn);
+
+            const projectInListTodo = projectById.getProjectTodo();
+            console.log(projectInListTodo);
+            
+            this.showTodo(projectInListTodo, projectInListId);
+        
+        }else {
+            console.log("Project not found with ID:", projectInListId);
+        }
+
+
         
         projectListContainer.addEventListener("click", (event) => {
             //const project = new Project(projectTitle, projectDescription);
+            const finishedTodoContainer = document.querySelector(".completed-todos");
+            finishedTodoContainer.style.display = "none";
             this.contentsContainer.style.display = "block";
     
             this.contentsContainer.innerHTML = "";

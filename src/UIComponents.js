@@ -333,6 +333,7 @@ export class UIComponents {
 
 
         const buttonsOuterDiv = document.createElement("div");
+        buttonsOuterDiv.className = "edit-delete-todoBtn";
         buttonsOuterDiv.append(deleteButton, editButton)
         
         

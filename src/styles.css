@@ -6,29 +6,98 @@
 body {
     display: grid;
     grid-template-columns: 0.5fr 2fr;
+    background-color: silver;
+}
+
+.title {
+    grid-column: 2;
+    text-align: center;
+    padding-top: 2rem;
+    grid-row: 1 / -1 ;
 }
 
 .dashboard {
-    background-color: aqua;
+    background-color: darkgreen;
     grid-column: 1 / 2;
-    grid-row: 2;
-    height: 100vh;
     position: relative;
-}
-
-.contents {
-    background-color: aquamarine;
-    grid-column: 2;
-    grid-row: 2;
-    padding: 2rem;
-    position: relative;
+    padding: 1rem 2rem;
+    grid-row: 1;
 }
 
 .completed-todos {
-    display: none;
     grid-column: 2;
-    grid-row: 2;
+    grid-row: 1;
+    margin-top: 4rem;
+    display: none;
 }
+
+.completed-todos div {
+    background-color: darkseagreen;
+    margin: 0.2rem 0.3rem;
+}
+
+.project-list {
+    margin-top: 1rem;
+}
+
+.project-list .project-container {
+    border: 0.1rem solid darkkhaki;
+    margin-bottom: 0.5rem;
+    color: white;
+    padding: 0.3rem;
+}
+
+.project-list .project-container p {
+    color: yellow;
+}
+
+.contents .project-container{
+    padding-top: 1rem;
+}
+
+.add-todoBtn {
+    padding: 0.5rem;
+}
+
+.contents {
+    /*background-color: aquamarine;*/
+    grid-column: 2;
+   /* padding: 2rem;*/
+    position: relative;
+    grid-row: 1;
+    margin-top: 4rem;
+    display: none;
+}
+
+
+.todo-outer-container {
+    background-color: darkseagreen ;
+    margin: 2px 3px;
+    padding: 1.5rem;
+}
+
+.todo-outer-container:hover {
+    border-bottom: 2px dotted black;
+}
+
+.todo-container {
+    display: flex;
+
+    
+}
+
+.checkbox-label {
+    /*margin-right:  100px;*/
+}
+
+.edit-delete-todoBtn {
+    margin: 0 auto;
+    display: flex;
+    background-color: yellow;
+    width: 2em;
+    gap: 50px;
+}
+
 
 .project-form {
     max-width: 50ch;

@@ -185,6 +185,9 @@ export class UIComponents {
         //const myProjects = 
         //document.querySelector(".project-list");
         this.contentsContainer = document.querySelector(".contents");
+
+        this.contentsContainer.innerHTML = "";
+
         this.contentsContainer.style.display = 'block';
         const projectInList = projectListContainer.querySelector(".project-container");
         console.log(projectInList);
@@ -230,11 +233,65 @@ export class UIComponents {
             const finishedTodoContainer = document.querySelector(".completed-todos");
             finishedTodoContainer.style.display = "none";
             this.contentsContainer.style.display = "block";
+
+            //const todoContainer = this.contentsContainer.querySelector(".todo-container");
+            //console.log(todoContainer);
+            
+            
+            this.contentsContainer.addEventListener("mouseover", (event) => {
+                if (event.target) {
+                    console.log(event.target);
+                    const todoContainer = event.target.querySelector(".todo-container");
+                    console.log(todoContainer);
+
+                    if (todoContainer) {
+                        console.log("event trigered");
+                        const editingBtnContainer = todoContainer.querySelector(".edit-delete-todoBtn");
+                        if (editingBtnContainer) {
+                            console.log(editingBtnContainer);
+                            editingBtnContainer.style.display = "block";
+                        }else {
+                            console.log("editing buttons container not found");
+                        }
+                       
+                    }else {
+                        console.log("todo inner container not found");
+                    }
+                }
+            });
+
+            this.contentsContainer.addEventListener("mouseout", (event) => {
+                if (event.target) {
+                    console.log(event.target);
+                    const todoContainer = event.target.querySelector(".todo-container");
+                    console.log(todoContainer);
+
+                    if (todoContainer) {
+                        console.log("event trigered");
+                        const editingBtnContainer = todoContainer.querySelector(".edit-delete-todoBtn");
+                        if (editingBtnContainer) {
+                            console.log(editingBtnContainer);
+                            editingBtnContainer.style.display = "none";
+                        }else {
+                            console.log("editing buttons container not found");
+                        }
+                       
+                    }else {
+                        console.log("todo inner container not found");
+                    }
+                }
+            });
+    
+
+    
+    
+
     
             this.contentsContainer.innerHTML = "";
 
+            
             const currentProject = event.target.parentElement;
-
+           
             console.log(currentProject);
             const currentProjectId = currentProject.id;
 
@@ -375,6 +432,7 @@ export class UIComponents {
 
         const buttonsOuterDiv = document.createElement("div");
         buttonsOuterDiv.className = "edit-delete-todoBtn";
+        buttonsOuterDiv.style.display = "none";
         buttonsOuterDiv.append(deleteButton, editButton)
         
         

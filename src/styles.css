@@ -14,7 +14,8 @@ body {
     text-align: center;
     padding-top: 2rem;
     grid-row: 1 / -1 ;
-    color: darkgoldenrod;
+    /*color: darkgoldenrod;*/
+    background-image: linear-gradient(to right, silver,  darkkhaki, yellowgreen, darkseagreen, khaki, darkgreen);
 }
 
 .dashboard {
@@ -29,7 +30,7 @@ body {
     margin-bottom: 2em;
     padding: 0.5em;
     border-radius: 10px;
-    border: none;
+    border: 0.1rem solid black;
     background-color: yellowgreen;
     font-size: 1em;
     font-weight: bold;
@@ -47,6 +48,10 @@ body {
     padding: 0.3rem;
 }
 
+.project-list .project-container:hover {
+    border: 0.15rem dotted darkorange;
+}
+
 .project-list .project-container p {
     color: yellow;
 }
@@ -54,7 +59,7 @@ body {
 .add-project {
     padding: 0.5em;
     border-radius: 10px;
-    border: none;
+    border: 0.1rem solid black;
     background-color: yellowgreen;
     font-size: 1em;
     font-weight: bold;
@@ -72,14 +77,6 @@ body {
     margin: 0.2rem 0.3rem;
 }
 
-.contents .project-container{
-    padding-top: 1rem;
-}
-
-.add-todoBtn {
-    padding: 0.5rem;
-}
-
 .contents {
     /*background-color: aquamarine;*/
     grid-column: 2;
@@ -89,6 +86,38 @@ body {
     margin-top: 4rem;
     display: none;
 }
+
+
+.contents .project-container{
+    padding-top: 1rem;
+    margin: 0.2rem 1.5rem;
+}
+
+.contents .project-container h1 {
+    font-weight: bold;
+}
+
+.contents .project-container p {
+    color: darkgreen;
+    font-weight: bold;
+}
+
+.add-todoBtn {
+   /* margin-bottom: 2em;*/
+    padding: 0.5em;
+    border-radius: 10px;
+    border: 0.1rem solid black;
+    background-color: yellowgreen;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0.5rem 1.5rem;
+}
+
+.completed:hover, .add-project:hover, .add-todoBtn:hover {
+    border: 0.1rem solid khaki;
+
+}
+
 
 
 .todo-outer-container {
@@ -103,20 +132,17 @@ body {
 
 .todo-container {
     display: flex;
-
     
 }
 
 .checkbox-label {
-    /*margin-right:  100px;*/
 }
 
 .edit-delete-todoBtn {
-    margin: 0 auto;
+   /* margin: 0 auto;*/
     display: flex;
-    background-color: yellow;
-    width: 2em;
-    gap: 50px;
+    align-items: center;
+    justify-content: center;
 }
 
 

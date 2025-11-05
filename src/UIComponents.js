@@ -126,8 +126,15 @@ export class UIComponents {
         titleH2.textContent = project.title;
         const descriptionParag = document.createElement("p");
         descriptionParag.textContent = project.description;
+        const deleteProjectbtn = document.createElement("button");
+        deleteProjectbtn.className = "deleteProjectBtn";
+        deleteProjectbtn.textContent = "delete";
+        //deleteProjectbtn.style.display = "none";
         const myProjects = document.querySelector(".project-list");
-        myProjectDiv.append(titleH2, descriptionParag);
+        
+        myProjectDiv.append(titleH2, descriptionParag, deleteProjectbtn);
+
+        this.addMouseEnterToTodoDiv(myProjectDiv, deleteProjectbtn);
         const copyCreatedProject = myProjectDiv.cloneNode(true);
         myProjects.appendChild(myProjectDiv);
             
@@ -156,7 +163,7 @@ export class UIComponents {
 
 
         projectArray.forEach((project) => {
-            const myProjectDiv = document.createElement("div");
+            /*const myProjectDiv = document.createElement("div");
             myProjectDiv.className = "project-container";
             myProjectDiv.id = project.id;
 
@@ -168,7 +175,8 @@ export class UIComponents {
             const myProjects = document.querySelector(".project-list");
             myProjectDiv.append(titleH2, descriptionParag);
             //const copyCreatedProject = myProjectDiv.cloneNode(true);
-            myProjects.appendChild(myProjectDiv);
+            myProjects.appendChild(myProjectDiv);*/
+            this.createProject(project);
             
           //  this.contentsContainer = document.querySelector(".contents");
           //  this.contentsContainer.innerHTML = "";
@@ -176,6 +184,7 @@ export class UIComponents {
           //  const addTodoBtn = this.createAddTodoButton(project.id);
           //  this.contentsContainer.appendChild(addTodoBtn);
            // this.showTodo(todoArray, project.id);
+           const myProjects = document.querySelector(".project-list");
            this.monitorProjects(myProjects);
         })
         
@@ -238,7 +247,7 @@ export class UIComponents {
             //console.log(todoContainer);
             
             
-            this.contentsContainer.addEventListener("mouseover", (event) => {
+           /* this.contentsContainer.addEventListener("mouseover", (event) => {
                 if (event.target) {
                     console.log(event.target);
                     const todoContainer = event.target.querySelector(".todo-container");
@@ -283,7 +292,7 @@ export class UIComponents {
             });
     
 
-    
+    */
     
 
     
@@ -376,7 +385,42 @@ export class UIComponents {
         }
     }
 
-     static createTodo(todo, projectID) {
+
+    static addMouseEnterToTodoDiv(projectOrTodoContainer, buttonContainer) {
+        projectOrTodoContainer.addEventListener("mouseenter", (event) => {
+            if (event.target) {
+                console.log(event.target);
+                console.log("event trigered");
+                //const editingBtnContainer = todoContainer.querySelector(".edit-delete-todoBtn");
+                if (buttonContainer) {
+                    console.log(buttonContainer);
+                    buttonContainer.style.display = "block";
+                }else {
+                    console.log("editing buttons container not found");
+                }
+            }else {
+                    console.log("project or todo container not found");
+                }
+            });
+
+        projectOrTodoContainer.addEventListener("mouseleave", (event) => {
+            if (event.target) {
+                console.log(event.target);
+                console.log("event trigered");
+                //const editingBtnContainer = todoContainer.querySelector(".edit-delete-todoBtn");
+                if (buttonContainer) {
+                    console.log(buttonContainer);
+                    buttonContainer.style.display = "none";
+                }else {
+                    console.log("editing buttons container not found");
+                }
+            }else {
+                console.log("todo or project container not found");
+            }
+        });
+    }
+
+    static createTodo(todo, projectID) {
 
         console.log(projectID);
        
@@ -397,6 +441,7 @@ export class UIComponents {
         tododiv.className = "todo-outer-container";
         const todoCheckListDiv = document.createElement("div");
         todoCheckListDiv.className = "todo-container";
+        
 
         todoCheckListDiv.dataset.projectId = projectID;
 
@@ -418,12 +463,12 @@ export class UIComponents {
 
         
         const deleteButton = document.createElement("button");
-        deleteButton.className = "delete-todo";
+        deleteButton.className = "delete-todoBtn";
         deleteButton.dataset.todoId = todo.id;
         deleteButton.textContent = "delete";
 
         const editButton = document.createElement("button");
-        editButton.className = "edit-todo";
+        editButton.className = "edit-todoBtn";
         editButton.textContent = "Edit";
         editButton.dataset.editedTodoId = todo.id;
         editButton.dataset.editedProjectId = projectID;
@@ -433,11 +478,17 @@ export class UIComponents {
         const buttonsOuterDiv = document.createElement("div");
         buttonsOuterDiv.className = "edit-delete-todoBtn";
         buttonsOuterDiv.style.display = "none";
-        buttonsOuterDiv.append(deleteButton, editButton)
+        buttonsOuterDiv.append(deleteButton, editButton);
+
+        const dateDiv = document.createElement("div");
+        dateDiv.textContent = date;
+        dateDiv.dataset.todoId = todo.id;
+        dateDiv.className = "todo-duedate";
+
         
         
 
-        todoCheckListDiv.append(todoCheckList, todoCheckListLabel, buttonsOuterDiv);
+        todoCheckListDiv.append(todoCheckList, todoCheckListLabel, dateDiv);
 
         deleteButton.addEventListener("click", (event) => {
             event.stopPropagation();
@@ -477,12 +528,9 @@ export class UIComponents {
 
 
 
-        const dateDiv = document.createElement("div");
-        dateDiv.textContent = date;
-        dateDiv.dataset.todoId = todo.id;
-        dateDiv.className = "todo-duedate";
-
-        tododiv.append(todoCheckListDiv, dateDiv);
+        
+        tododiv.append(todoCheckListDiv, buttonsOuterDiv);
+        this.addMouseEnterToTodoDiv(tododiv, buttonsOuterDiv);
 
         this.contentsContainer.appendChild(tododiv); 
 
@@ -553,22 +601,18 @@ export class UIComponents {
                                 }
                             }else{
                                 console.log("completed todos container not found");
-                    }
-                        }
-                    })
-                }
-            })
-            
-        
-        }
-
-
-        }
+                            };
+                        };
+                    });
+                };
+            });
+        };
+    }
             
             
     
     static addListenerToCompletedBtn() {
-        const completedTodoBtn = document.querySelector(".completed");
+        const completedTodoBtn = document.querySelector(".completedTodoBtn");
         completedTodoBtn.addEventListener('click', () => {
             const completedTodosContainer = document.querySelector(".completed-todos");
 

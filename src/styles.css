@@ -26,7 +26,7 @@ body {
     grid-row: 1;
 }
 
-.completed {
+.completedTodoBtn {
     margin-bottom: 2em;
     padding: 0.5em;
     border-radius: 10px;
@@ -63,6 +63,11 @@ body {
     background-color: yellowgreen;
     font-size: 1em;
     font-weight: bold;
+}
+
+.deleteProjectBtn {
+    display: block;
+    background-color: red;
 }
 
 .completed-todos {
@@ -102,7 +107,7 @@ body {
     font-weight: bold;
 }
 
-.add-todoBtn {
+.add-todoBtn, .edit-todoBtn, .delete-todoBtn {
    /* margin-bottom: 2em;*/
     padding: 0.5em;
     border-radius: 10px;
@@ -113,7 +118,8 @@ body {
     margin: 0.5rem 1.5rem;
 }
 
-.completed:hover, .add-project:hover, .add-todoBtn:hover {
+.completedTodoBtn:hover, .add-project:hover, .add-todoBtn:hover,
+.edit-todoBtn:hover, .delete-todoBtn:hover{
     border: 0.1rem solid khaki;
 
 }
@@ -124,6 +130,8 @@ body {
     background-color: darkseagreen ;
     margin: 2px 3px;
     padding: 1.5rem;
+    display: flex;
+    gap: 150px;
 }
 
 .todo-outer-container:hover {
@@ -131,7 +139,7 @@ body {
 }
 
 .todo-container {
-    display: flex;
+    width: 50%;
     
 }
 
@@ -139,10 +147,15 @@ body {
 }
 
 .edit-delete-todoBtn {
-   /* margin: 0 auto;*/
     display: flex;
-    align-items: center;
+    flex-direction: row;
     justify-content: center;
+    align-items: center;
+    width: 30%;
+}
+
+.edit-todoBtn, .delete-todoBtn {
+    width: 25%;
 }
 
 

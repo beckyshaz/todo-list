@@ -11,12 +11,6 @@ export class CreateForm {
         this.titleTodoInput.id = "todo-title";
         this.titleTodoInput.name = "todoTitle";
     
-      /*  this.descriptionTodoInput = document.createElement("input");
-        this.descriptionTodoInput.placeholder = "Description";
-        this.descriptionTodoInput.style.color = "rgba(0, 0, 0, 0.4)";
-        this.descriptionTodoInput.name = "todoDescription";
-        this.descriptionTodoInput.id = "todo-description";*/
-    
         this.dateInput = document.createElement("input");
         this.dateInput.type = "date";
         this.dateInput.id = "date";
@@ -137,14 +131,12 @@ export class CreateForm {
         this.todoFormDetailsDiv.className = "form-input-container";
     
     
-        this.todoFormDetailsDiv.append(this.titleTodoInput, this.descriptionTodoInput,
+        this.todoFormDetailsDiv.append(this.titleTodoInput,
             this.datepickerDiv, this.prioritiesDiv, this.todoNotesDiv, this.todoButtonsDiv);
             
         this.todosForm.appendChild(this.todoFormDetailsDiv);
             
-        //const todoFormContainer = document.querySelector(".todo-form-div");
-    
-        //todoFormContainer.appendChild(this.todosForm);
+
         return this.todosForm;
     }
 
@@ -184,8 +176,7 @@ export class CreateForm {
                 cancelBtn
             );
 
-            //const projectFormDiv = document.querySelector(".project-form-div");
-           // projectFormDiv.appendChild(this.projectForm);
+           
            return this.projectForm;
     }
 

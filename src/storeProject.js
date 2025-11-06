@@ -39,11 +39,7 @@ export class StoreProject {
             });
 
             return projectInstance;
-
-        });
-
-
-       
+        });  
     }
 
 
@@ -53,6 +49,12 @@ export class StoreProject {
        // Storage.removeItem();
 
        UIComponents.showProjects();
+    }
+
+    deleteProject(projectId) {
+        const storedProject = this.getProjects();
+        const updatedProjects = storedProject.filter((project) => project.id !== projectId)
+        localStorage.setItem(this.storageKey, JSON.stringify(updatedProjects));
     }
 
     updateProject(updatedProject) {
@@ -77,8 +79,5 @@ export class StoreProject {
         const projectByID = storedProjects.find((p) => p.id === projectId);
         return projectByID;
     }
-
-    
-    
     
 }

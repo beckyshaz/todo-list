@@ -88,24 +88,13 @@ export class TodoFormHandlers {
 
 
             const todo  = new Todos(titleTodoInput.value, dateInput.value, todoNotes.value);
-            //const projectContents = document.querySelector(".contents");
             
 
             const todoPriority = this.getPriority(this.form, todo);
 
             console.log(todoPriority);
 
-            //todo.setPriority(todoPriority);
-
-            //projectContents.innerHTML = "";       
-
-           // const currentProjectContainerChildren = projectContents.children;
-            //console.log(currentProjectContainerChildren);
-    
-    
-           // const currentProjectContainer = projectContents.children[0];
-           // console.log(currentProjectContainer);
-    
+           
             const currentId = this.currentProjectId;
             console.log(currentId);
     
@@ -119,8 +108,6 @@ export class TodoFormHandlers {
             projectById.addTaskToProject(todo);
 
             storedProjects.updateProject(projectById);
-    
-            //this.createAddTodoButton(projectContents);
             
             const createdTodo = UIComponents.createTodo(todo, currentId);
 

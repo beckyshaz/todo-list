@@ -3,7 +3,6 @@ import { id } from "date-fns/locale";
 import { StoreProject } from "./storeProject";
 import { TodosForm } from "./todos";
 import { compareAsc } from "date-fns";
-//import { CreateForm } from "./createForm";
 
 
 
@@ -31,15 +30,6 @@ export class UIComponents {
 
     static createTodoForm() {
 
-        //const todoForm = null;
-        //const todoFormHandler = null;
-
-        //const exinstingForm = document.querySelector(".todo-form");
-
-       // if (exinstingForm) {
-          //  return [exinstingForm]
-       // }
-
         const formAndHandlerArray = [];
         const todoFormObject = new TodosForm();
         if(todoFormObject) {
@@ -62,11 +52,6 @@ export class UIComponents {
             this.todoFormHandler = formHandlerArray[0];
             this.todoForm = formHandlerArray[1];
 
-
-          /*  if (this.todoFormHandler.setCurrentProjectId) {
-                this.todoFormHandler.setCurrentProjectId(projectId);
-            }
-            */
             const todoFormContainer = document.querySelector(".todo-form-div");
             todoFormContainer.appendChild(this.todoForm);
         }
@@ -84,39 +69,6 @@ export class UIComponents {
     }
 
 
-    /*static createAddTodoButton() {
-
-        const ex
-        const formHandlerArray = this.createTodoForm();
-        const handler = formHandlerArray[0];
-        console.log(handler);
-        const todoForm = formHandlerArray[1];
-        console.log(todoForm);
-        
-        const todoFormContainer = document.querySelector(".todo-form-div");
-
-        if (todoFormContainer) {
-           const existingForm = todoFormContainer.querySelector(".todo-form");
-           if (existingForm) {
-            existingForm.style.display = existingForm.style.display === "block" ? "none" : "block";
-           }else {
-            console.log("todo form not found");
-           }
-            
-        }
-        todoFormContainer.appendChild(todoForm)
-
-
-        const addTodoBtn = this.createAddButton(handler);
-        addTodoBtn.textContent = "Add tasks";
-        addTodoBtn.className = "add-todoBtn";
-        console.log(addTodoBtn);
-        //const contentsContainer = document.querySelector(".contents");
-        return addTodoBtn;
-    }
-
-*/
-
     static createProject(project) {
 
         const myProjectDiv = document.createElement("div");
@@ -129,7 +81,16 @@ export class UIComponents {
         const deleteProjectbtn = document.createElement("button");
         deleteProjectbtn.className = "deleteProjectBtn";
         deleteProjectbtn.textContent = "delete";
-        //deleteProjectbtn.style.display = "none";
+
+        deleteProjectbtn.addEventListener("click", (event) => {
+            console.log("delete project event triggered");
+            const store = new StoreProject();
+            store.deleteProject(project.id);
+            const projectContainer = event.currentTarget.parentElement;
+            myProjects.removeChild(projectContainer);
+            
+        })
+
         const myProjects = document.querySelector(".project-list");
         
         myProjectDiv.append(titleH2, descriptionParag, deleteProjectbtn);
@@ -144,14 +105,6 @@ export class UIComponents {
         const addTodoBtn = this.createAddTodoButton(project.id);
         this.contentsContainer.appendChild(addTodoBtn);
 
-       /* const store = new StoreProject();
-        const currentProject = store.getProjectsByID(project.id);
-        console.log(currentProject);
-
-        const todo = currentProject.getProjectTodo();
-        console.log(todo)
-
-        this.showTodo(todo, currentProject);*/
 
     }
 
@@ -163,36 +116,17 @@ export class UIComponents {
 
 
         projectArray.forEach((project) => {
-            /*const myProjectDiv = document.createElement("div");
-            myProjectDiv.className = "project-container";
-            myProjectDiv.id = project.id;
-
-           // const todoArray = project.getProjectTodo();
-            const titleH2 = document.createElement("h2");
-            titleH2.textContent = project.title;
-            const descriptionParag = document.createElement("p");
-            descriptionParag.textContent = project.description;
-            const myProjects = document.querySelector(".project-list");
-            myProjectDiv.append(titleH2, descriptionParag);
-            //const copyCreatedProject = myProjectDiv.cloneNode(true);
-            myProjects.appendChild(myProjectDiv);*/
             this.createProject(project);
             
-          //  this.contentsContainer = document.querySelector(".contents");
-          //  this.contentsContainer.innerHTML = "";
-           // this.contentsContainer.appendChild(copyCreatedProject);
-          //  const addTodoBtn = this.createAddTodoButton(project.id);
-          //  this.contentsContainer.appendChild(addTodoBtn);
-           // this.showTodo(todoArray, project.id);
-           const myProjects = document.querySelector(".project-list");
-           this.monitorProjects(myProjects);
+            const myProjects = document.querySelector(".project-list");
+            
+            this.monitorProjects(myProjects);
         })
         
     }
 
     static monitorProjects(projectListContainer) {
-        //const myProjects = 
-        //document.querySelector(".project-list");
+       
         this.contentsContainer = document.querySelector(".contents");
 
         this.contentsContainer.innerHTML = "";
@@ -238,64 +172,12 @@ export class UIComponents {
 
         
         projectListContainer.addEventListener("click", (event) => {
-            //const project = new Project(projectTitle, projectDescription);
+            
             const finishedTodoContainer = document.querySelector(".completed-todos");
             finishedTodoContainer.style.display = "none";
             this.contentsContainer.style.display = "block";
 
-            //const todoContainer = this.contentsContainer.querySelector(".todo-container");
-            //console.log(todoContainer);
-            
-            
-           /* this.contentsContainer.addEventListener("mouseover", (event) => {
-                if (event.target) {
-                    console.log(event.target);
-                    const todoContainer = event.target.querySelector(".todo-container");
-                    console.log(todoContainer);
-
-                    if (todoContainer) {
-                        console.log("event trigered");
-                        const editingBtnContainer = todoContainer.querySelector(".edit-delete-todoBtn");
-                        if (editingBtnContainer) {
-                            console.log(editingBtnContainer);
-                            editingBtnContainer.style.display = "block";
-                        }else {
-                            console.log("editing buttons container not found");
-                        }
-                       
-                    }else {
-                        console.log("todo inner container not found");
-                    }
-                }
-            });
-
-            this.contentsContainer.addEventListener("mouseout", (event) => {
-                if (event.target) {
-                    console.log(event.target);
-                    const todoContainer = event.target.querySelector(".todo-container");
-                    console.log(todoContainer);
-
-                    if (todoContainer) {
-                        console.log("event trigered");
-                        const editingBtnContainer = todoContainer.querySelector(".edit-delete-todoBtn");
-                        if (editingBtnContainer) {
-                            console.log(editingBtnContainer);
-                            editingBtnContainer.style.display = "none";
-                        }else {
-                            console.log("editing buttons container not found");
-                        }
-                       
-                    }else {
-                        console.log("todo inner container not found");
-                    }
-                }
-            });
-    
-
-    */
-    
-
-    
+           
             this.contentsContainer.innerHTML = "";
 
             
@@ -332,25 +214,9 @@ export class UIComponents {
 
 
                 this.showTodo(projectTodo, currentProjectId);
-
-
             }else {
-            console.log("Project not found with ID:", currentProjectId);
-        }
-
-            
-
-            //this.contentsContainer.appendChild(copyContents);
-           // this.contentsContainer.appendChild(addBtn);
-            
-
-            //const TodoBtn = new AddBtnUI();
-            //const addTodoBtn = TodoBtn.createAddTodoButton(todoForm);
-            //addTodoBtn.classname = "add-todo";
-            //addTodoBtn.textContent = "Add Todo";
-
-           
-        
+                console.log("Project not found with ID:", currentProjectId);
+            }
         });
     }
 
@@ -359,16 +225,11 @@ export class UIComponents {
             todoArray.forEach((todo) => { 
                 if (todo.completed === false) {
                     this.createTodo(todo, projectId);
-                }/*else {
-                    this.showFinishedTodo(todo, projectId);
-                }*/
-                
+                }
             });
-            
         }else {
             console.log("no todos found");
         }
-        
     }
 
     static applyColorByPriority(priority, titleLabel) {
@@ -391,7 +252,7 @@ export class UIComponents {
             if (event.target) {
                 console.log(event.target);
                 console.log("event trigered");
-                //const editingBtnContainer = todoContainer.querySelector(".edit-delete-todoBtn");
+                
                 if (buttonContainer) {
                     console.log(buttonContainer);
                     buttonContainer.style.display = "block";
@@ -407,7 +268,7 @@ export class UIComponents {
             if (event.target) {
                 console.log(event.target);
                 console.log("event trigered");
-                //const editingBtnContainer = todoContainer.querySelector(".edit-delete-todoBtn");
+                
                 if (buttonContainer) {
                     console.log(buttonContainer);
                     buttonContainer.style.display = "none";
@@ -511,9 +372,7 @@ export class UIComponents {
         editButton.addEventListener("click", (event) => {
             if (event.currentTarget) {
                 event.stopPropagation();
-
-                //const todoId = event.currentTarget.dataset.todoId;
-                
+            
                 this.todoForm.style.display = "block";
                 this.todoForm.dataset.editMode = "true";
                 this.todoForm.dataset.editedTodoId = todo.id;
@@ -521,10 +380,8 @@ export class UIComponents {
                 todoTitle.value = todoCheckListLabel.textContent;
                 console.log(todoTitle.value);
 
-                //const currentTodo = this.todoForm.
-
-            }
-        })
+            };
+        });
 
 
 
@@ -546,18 +403,16 @@ export class UIComponents {
         const projects = store.getProjects();
         const projectsInforArray = projects.map((project) => { 
            const todosArray = project.getProjectTodo();
-            //console.log(todosArray);
-            const projectId = project.id;
+           const projectId = project.id;
             const projectTitle = project.title;
-            //console.log(projectTitle);
+            
             return {
                 todosArray,
                 projectId,
                 projectTitle
-            }
-
+            };
     
-        })
+        });
 
         if (projectsInforArray && projectsInforArray.length > 0) {
             projectsInforArray.forEach((projectInfo) => {
@@ -625,8 +480,6 @@ export class UIComponents {
 
     static handleTodoChecklist(container) {
 
-        //const contentsContainer = document.querySelector(".contents");
-    
         container.addEventListener("change", (event) => {
             if (event.target.type === "checkbox") { 
                 if (event.target.checked) {
@@ -668,17 +521,12 @@ export class UIComponents {
 
                     store.updateProject(storedProject);
 
-                    
-                   // this.showFinishedTodo(projectTodo, projectId);
-
                 };
-                //const finishedTodo = event.target.value;
-               
-
+                
             };
         });
 
-    }
+    };
 
     
 }
